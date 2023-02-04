@@ -1,38 +1,47 @@
-﻿using System;
+﻿using AssemblyCSharp.Assets.Data;
+using AssemblyCSharp.Assets.Scripts;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace GGJ {
-    public class StartScreenController : MonoBehaviour {
-        
-        [SerializeField] private GameObject entireScreen;
-        [SerializeField] private Animator animator;
-        
-        public void Awake(){
+namespace AssemblyCSharp.AssetsData.Logic
+{
+	public class StartScreenController : MonoBehaviour
+	{
+		[SerializeField]
+		private Animator animator;
 
-            animator.Play("OnIdle");
-            entireScreen.SetActive(true);
-        }
+		private AppStateManager appStateManager;
 
-        public void OnPlayButtonPress(){
+		[SerializeField]
+		private GameObject entireScreen;
 
-            animator.Play("OnStartButtonClicked", 0);
+		public void Awake()
+		{
+			animator.Play("OnIdle");
+			entireScreen.SetActive(true);
+		}
 
-            StartCoroutine(WaitThenTurnOff());
-        }
+		public void Initialize(AppStateManager appStateManager)
+		{
+			appStateManager.AddEnterListener(AppState.Title, Show);
+			appStateManager.AddLeaveListener(AppState.Title, Hide);
+			this.appStateManager = appStateManager;
+		}
 
-        private IEnumerator WaitThenTurnOff(){
-            
-            yield return new WaitForSeconds(10);
-            
-            MakeInvisible();
-        }
+		public void OnPlayButtonPress()
+		{
+			animator.Play("OnStartButtonClicked", 0);
+			StartCoroutine(WaitThenTurnOff());
+		}
 
-        public void MakeInvisible(){
-        
-            entireScreen.SetActive(false);
-        }
-    }
+		private void Hide() => entireScreen.SetActive(false);
+
+		private void Show() => entireScreen.SetActive(true);
+
+		private IEnumerator WaitThenTurnOff()
+		{
+			yield return new WaitForSeconds(10);
+			appStateManager.ChangeState(AppState.Game);
+		}
+	}
 }

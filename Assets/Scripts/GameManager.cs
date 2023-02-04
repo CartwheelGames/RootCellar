@@ -3,6 +3,7 @@ using AssemblyCSharp.AssetsData.Data;
 using AssemblyCSharp.AssetsData.Data.Config;
 using AssemblyCSharp.AssetsData.Data.State;
 using AssemblyCSharp.AssetsData.Logic;
+using GGJ;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -16,6 +17,9 @@ namespace AssemblyCSharp.Assets.Scripts
 
 		public GameState gameState;
 
+		[SerializeField]
+		public StartScreenController startScreen;
+
 		private AppStateManager appStateManager = new();
 
 		[SerializeField]
@@ -24,6 +28,7 @@ namespace AssemblyCSharp.Assets.Scripts
 		public void Start()
 		{
 			gameState = GenerateStage(gameConfig);
+			startScreen.Initialize(appStateManager);
 			appStateManager.ChangeState(AppState.Title);
 			character.Initialize(gameConfig.playerCharacter);
 		}
