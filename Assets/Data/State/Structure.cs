@@ -1,4 +1,4 @@
-﻿namespace VerdantVibes.Data.State
+﻿namespace AssemblyCSharp.AssetsData.Data.State
 {
 	public class Structure
 	{

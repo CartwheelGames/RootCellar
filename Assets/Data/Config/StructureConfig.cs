@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VerdantVibes.Data.Config
+namespace AssemblyCSharp.AssetsData.Data.Config
 {
 	public sealed class StructureConfig
 	{

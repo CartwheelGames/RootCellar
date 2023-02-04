@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace VerdantVibes.Data.State
+namespace AssemblyCSharp.AssetsData.Data.State
 {
 	public sealed class Stage
 	{

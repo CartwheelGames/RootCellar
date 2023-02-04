@@ -1,4 +1,4 @@
-﻿namespace VerdantVibes.Data
+﻿namespace AssemblyCSharp.AssetsData.Data
 {
 	public enum TileType
 	{
