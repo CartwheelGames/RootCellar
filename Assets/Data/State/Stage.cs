@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RootCellar.Data.State
+namespace VerdantVibes.Data.State
 {
 	public sealed class Stage
 	{

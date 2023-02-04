@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RootCellar.Data.Config
+namespace VerdantVibes.Data.Config
 {
 	public sealed class StructureConfig
 	{

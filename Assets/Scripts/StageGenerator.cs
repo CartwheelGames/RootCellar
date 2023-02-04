@@ -1,11 +1,11 @@
-﻿using RootCellar.Data;
-using RootCellar.Data.Config;
-using RootCellar.Data.State;
+﻿using VerdantVibes.Data;
+using VerdantVibes.Data.Config;
+using VerdantVibes.Data.State;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RootCellar.Logic
+namespace VerdantVibes.Logic
 {
 	public static class StageGenerator
 	{

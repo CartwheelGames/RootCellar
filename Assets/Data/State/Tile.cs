@@ -1,4 +1,4 @@
-﻿namespace RootCellar.Data.State
+﻿namespace VerdantVibes.Data.State
 {
 	public class Tile
 	{

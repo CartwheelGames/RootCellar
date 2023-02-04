@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RootCellar.Data.Config
+namespace VerdantVibes.Data.Config
 {
 	public sealed class CropConfig
 	{

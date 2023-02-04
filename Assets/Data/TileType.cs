@@ -1,4 +1,4 @@
-﻿namespace RootCellar.Data
+﻿namespace VerdantVibes.Data
 {
 	public enum TileType
 	{

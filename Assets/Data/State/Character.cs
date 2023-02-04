@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RootCellar.Data.State
+namespace VerdantVibes.Data.State
 {
 	public class Character
 	{
@@ -8,7 +8,7 @@ namespace RootCellar.Data.State
 
 		public string Image { get; set; } = string.Empty;
 
-		public Dictionary<ResourceType, int> Inventory { get; set; } = new();
+		public Dictionary<string, int> Inventory { get; set; } = new();
 
 		public bool IsFacingLeft { get; set; }
 
