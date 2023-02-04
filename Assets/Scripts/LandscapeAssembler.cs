@@ -2,6 +2,7 @@ using AssemblyCSharp.Assets.Data;
 using AssemblyCSharp.AssetsData.Data.Config;
 using AssemblyCSharp.AssetsData.Data.State;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace AssemblyCSharp.Assets.Scripts
@@ -33,9 +34,10 @@ namespace AssemblyCSharp.Assets.Scripts
 		private void Generate()
 		{
 			tiles = new GameObject[stage.Tiles.Length];
+            TileSetConfig tileSet = tileSets.SingleOrDefault(t=>t.id == stage.TileSetId);
 			for (int x = 0; x < stage.Tiles.Length; x++)
 			{
-				tiles[x] = Instantiate(tilePrefab, new Vector3(x, 0, 0), Quaternion.identity);
+				tiles[x] = Instantiate(tilePrefab, new Vector3(x, -1, 0), Quaternion.identity, transform);
 			}
 		}
 	}
