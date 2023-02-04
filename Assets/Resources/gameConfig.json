@@ -1,0 +1,81 @@
+{
+	"PlayerCharacter": {
+	  "Speed": 1,
+	  "Image": "characters/player.png"
+	},
+	"ResourceIcons": {
+	  "Ration": "Icons/ration.png",
+	  "Lumber": "Icons/ration.png",
+	  "Seed": "Icons/seed.png"
+	},
+	"Crops": {
+	  "Radish": {
+		"Days": 3,
+		"ImagesByDay": {
+		  "0": "Crops/radish-0.png",
+		  "1": "Crops/radish-1.png",
+		  "3": "Crops/radish-3.png"
+		},
+		"Yield": 2,
+		"SeedImage": "crops/radish-seed.png",
+		"SeedChance": 20
+	  }
+	},
+	"Structures": {
+	  "Lumber": {
+		"Name": "Lumber Bin",
+		"ResourceCount": 10,
+		"ResourceType": "Lumber",
+		"Levels": [
+		  {
+			"Capacity": 5,
+			"Image": "Structures/lumber-bin-01.png"
+		  },
+		  {
+			"Capacity": 10,
+			"Cost": {
+			  "ResourceId": "Lumber",
+			  "Amount": 6
+			},
+			"Image": "Structures/lumber-bin-02.png"
+		  },
+		  {
+			"Capacity": 15,
+			"Cost": {
+			  "ResourceId": "Lumber",
+			  "Amount": 8
+			},
+			"Image": "Structures/lumber-bin-03.png"
+		  }
+		]
+	  }
+	},
+	"TileSets": {
+	  "temperate": {
+		"Name": "Temperate",
+		"Tiles": {
+		  "Dirt01": {
+			"Type": "Dirt",
+			"Image": "Tiles/dirt-01.png"
+		  },
+		  "Rock01": {
+			"Type": "Rock",
+			"Image": "Tiles/rock-01.png"
+		  },
+		  "Path01": {
+			"Type": "Path",
+			"Image": "Tiles/path-01.png"
+		  },
+		  "Plot01": {
+			"Type": "Plot",
+			"Image": "Tiles/plot-01.png"
+		  },
+		  "Crop01": {
+			"Type": "Crop",
+			"Image": "Tiles/crop-01.png"
+		  }
+		}
+	  }
+	}
+  }
+  
