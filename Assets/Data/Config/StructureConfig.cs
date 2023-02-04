@@ -1,35 +1,40 @@
 ﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace AssemblyCSharp.AssetsData.Data.Config
 {
+	[Serializable]
 	public sealed class StructureConfig
 	{
-		public Level[] Levels { get; set; } = Array.Empty<Level>();
+		public string id;
 
-		public string Name { get; set; } = string.Empty;
+		public List<Level> levels = new();
 
-		public int ResourceCount { get; set; }
+		public string name = string.Empty;
 
-		public ResourceType ResourceType { get; set; }
+		public int resourceCount;
 
-		public StructureType Type { get; set; }
+		public ResourceType resourceType;
+
+		public StructureType type;
 
 		public sealed class Level
 		{
-			public int Capacity { get; set; }
+			public int capacity;
 
-			public LevelCost Cost { get; set; }
+			public LevelCost cost;
 
-			public string Event { get; set; } = string.Empty;
+			public string eventName = string.Empty;
 
-			public string Image { get; set; } = string.Empty;
+			public Texture2D image;
 		}
 
 		public class LevelCost
 		{
-			public int Amount { get; set; }
+			public int amount;
 
-			public string ResourceId { get; set; }
+			public string resourceId;
 		}
 	}
 }

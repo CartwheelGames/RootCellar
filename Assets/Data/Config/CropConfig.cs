@@ -1,17 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace AssemblyCSharp.AssetsData.Data.Config
 {
+	[Serializable]
 	public sealed class CropConfig
 	{
-		public int Days { get; set; }
+		public int days;
 
-		public Dictionary<int, string> ImagesByDay { get; set; } = new();
+		public string id;
+
+		public List<Texture2D> imagesByDay = new();
 
 		/// <remarks> Out of 100 </remarks>
-		public byte SeedChance { get; set; }
+		public byte seedChance;
 
-		public string SeedImage { get; set; } = string.Empty;
+		public Texture2D seedImage;
 
 		public int Yield { get; set; }
 	}

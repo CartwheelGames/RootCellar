@@ -1,15 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AssemblyCSharp.AssetsData.Data.Config
 {
+	[Serializable]
 	public sealed class StageConfig
 	{
-		public int BaseWidth { get; set; }
+		public int baseWidth;
 
-		public Dictionary<int, string> Structures { get; set; } = new();
+		public List<StageStructureInfo> structures  = new();
 
-		public string TileSet { get; set; } = string.Empty;
+		public string tileSet = string.Empty;
 
-		public int Width { get; set; }
+		public int width;
+
+		[Serializable]
+		public class StageStructureInfo
+		{
+			public string structureId;
+
+			public int x;
+		}
 	}
 }
