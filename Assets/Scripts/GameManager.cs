@@ -29,8 +29,8 @@ namespace AssemblyCSharp.Assets.Scripts
 		{
 			gameState = GenerateStage(gameConfig);
 			startScreen.Initialize(appStateManager);
-			appStateManager.ChangeState(AppState.Title);
 			character.Initialize(gameConfig.playerCharacter);
+			appStateManager.ChangeState(AppState.Title);
 		}
 
 		private static GameState GenerateStage(GameConfig gameConfig)

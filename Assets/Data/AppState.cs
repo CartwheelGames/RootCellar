@@ -6,6 +6,8 @@
 
 		Title,
 
+		TitleToGame,
+
 		Game,
 
 		Pause,
