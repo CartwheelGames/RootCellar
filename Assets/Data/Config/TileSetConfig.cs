@@ -6,10 +6,8 @@ namespace AssemblyCSharp.AssetsData.Data.Config
 	[Serializable]
 	public sealed class TileSetConfig
 	{
-		public string Id { get; set; }
+		public string id;
 
-		public string Image { get; set; } = string.Empty;
-
-		public List<TileConfig> Tiles { get; set; } = new();
+		public List<TileConfig> tiles = new();
 	}
 }

@@ -8,7 +8,7 @@ namespace AssemblyCSharp.AssetsData.Data.Config
 	{
 		public int baseWidth;
 
-		public List<StageStructureInfo> structures  = new();
+		public List<StageStructureInfo> structures = new();
 
 		public string tileSet = string.Empty;
 

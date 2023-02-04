@@ -21,4 +21,10 @@ MonoBehaviour:
     tileSet: 
     width: 0
   structures: []
-  tileSets: []
+  tileSets:
+  - id: 
+    tiles:
+    - id: 
+      image: {fileID: 0}
+      type: 0
+      weight: 0

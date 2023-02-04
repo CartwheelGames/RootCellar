@@ -21,14 +21,14 @@ namespace AssemblyCSharp.AssetsData.Logic
 			int halfBaseWidth = baseWidth / 2;
 			int baseStartX = halfWidth - halfBaseWidth;
 			int baseEndX = halfWidth + halfBaseWidth;
-			TileSetConfig tileSet = config.tileSets.SingleOrDefault(t => t.Id == tileSetId);
+			TileSetConfig tileSet = config.tileSets.SingleOrDefault(t => t.id == tileSetId);
 			if (tileSet != null)
 			{
-				int totalWeight = tileSet.Tiles.Sum(x => x.weight);
-				List<TileConfig> pathTiles = tileSet.Tiles
+				int totalWeight = tileSet.tiles.Sum(x => x.weight);
+				List<TileConfig> pathTiles = tileSet.tiles
 					.Where(x => x.type is TileType.Path)
 					.ToList();
-				List<TileConfig> tileKeys = tileSet.Tiles;
+				List<TileConfig> tileKeys = tileSet.tiles;
 				Random random = new();
 				for (int x = 0; x < width; x++)
 				{
@@ -44,9 +44,9 @@ namespace AssemblyCSharp.AssetsData.Logic
 					else
 					{
 						int randomValue = random.Next(totalWeight);
-						for (int t = 0; t < tileSet.Tiles.Count; t++)
+						for (int t = 0; t < tileSet.tiles.Count; t++)
 						{
-							TileConfig tile = tileSet.Tiles[t];
+							TileConfig tile = tileSet.tiles[t];
 							if (randomValue < tile.weight)
 							{
 								tiles[x] = new Tile()
