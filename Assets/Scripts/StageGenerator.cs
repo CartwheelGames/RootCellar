@@ -1,6 +1,6 @@
-﻿using VerdantVibes.Data;
-using VerdantVibes.Data.Config;
-using VerdantVibes.Data.State;
+﻿using AssemblyCSharp.AssetsData.Data;
+using AssemblyCSharp.AssetsData.Data.Config;
+using AssemblyCSharp.AssetsData.Data.State;
 using System;
 using System.Collections.Generic;
 using System.Linq;
