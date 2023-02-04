@@ -33,7 +33,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			gameState = GenerateStage(gameConfig);
 			startScreen.Initialize(appStateManager);
 			appStateManager.ChangeState(AppState.Title);
-			character.Initialize(gameConfig.playerCharacter, gameState.Characterr);
+			character.Initialize(gameConfig.playerCharacter, gameState.Character);
 			landscapeAssembler.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
 		}
 
@@ -48,7 +48,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			return new GameState()
 			{
 				Stage = stage,
-				Characterr = player
+				Character = player
 			};
 		}
 
