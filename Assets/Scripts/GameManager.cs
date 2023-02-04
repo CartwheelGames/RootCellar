@@ -33,7 +33,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			gameState = GenerateStage(gameConfig);
 			startScreen.Initialize(appStateManager);
 			appStateManager.ChangeState(AppState.Title);
-			character.Initialize(gameConfig.playerCharacter);
+			character.Initialize(gameConfig.playerCharacter, gameState.Character);
 			landscapeAssembler.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
 		}
 
@@ -43,13 +43,12 @@ namespace AssemblyCSharp.Assets.Scripts
 			Character player = new()
 			{
 				BaseSpeed = gameConfig.playerCharacter.baseSpeed,
-				Name = "Player",
 				X = GetPlayerStartX(gameConfig, stage)
 			};
 			return new GameState()
 			{
 				Stage = stage,
-				Player = player
+				Character = player
 			};
 		}
 
@@ -62,7 +61,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			for (int x = 0; x < stage.Tiles.Length; x++)
 			{
 				Tile tile = stage.Tiles[x];
-				if (tile.Structure?.StructureConfigId != null
+				if (tile?.Structure?.StructureConfigId != null
 					&& homeIds.Contains(tile.Structure.StructureConfigId))
 				{
 					return x;

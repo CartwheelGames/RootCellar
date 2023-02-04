@@ -27,7 +27,7 @@ MonoBehaviour:
     - id: dirt
       image: {fileID: 0}
       type: 1
-      weight: 0
+      weight: 1
     - id: path
       image: {fileID: 0}
       type: 9
