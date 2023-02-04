@@ -16,15 +16,19 @@ MonoBehaviour:
   playerCharacter:
     baseSpeed: 0.01
   stages:
-  - baseWidth: 0
+  - baseWidth: 10
     structures: []
-    tileSet: 
-    width: 0
+    tileSet: tiles
+    width: 200
   structures: []
   tileSets:
-  - id: 
+  - id: tiles
     tiles:
-    - id: 
+    - id: dirt
       image: {fileID: 0}
-      type: 0
+      type: 1
+      weight: 0
+    - id: path
+      image: {fileID: 0}
+      type: 9
       weight: 0
