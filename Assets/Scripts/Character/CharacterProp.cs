@@ -12,7 +12,7 @@ namespace GGJ
 		[SerializeField]
 		private LayerMask movementCollisionLayers;
 		[SerializeField]
-		private Animator animator;
+		private Animator canvasGroup;
 		[SerializeField]
 		private float animationFadeSpeed;
 		private CharacterState currentState;
@@ -100,7 +100,7 @@ namespace GGJ
 
 		public float GetDistanceFrom(GameObject gameObject)
 			=> Vector3.Distance(Position, gameObject.transform.position);
-		private void PlayAnimation(string stateName) => animator.CrossFade(stateName, animationFadeSpeed);
+		private void PlayAnimation(string stateName) => canvasGroup.CrossFade(stateName, animationFadeSpeed);
 		private void SetState(CharacterState state)
 		{
 			if (state != currentState)

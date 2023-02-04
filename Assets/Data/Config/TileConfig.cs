@@ -1,11 +1,17 @@
-﻿namespace AssemblyCSharp.AssetsData.Data.Config
+﻿using System;
+using UnityEngine;
+
+namespace AssemblyCSharp.AssetsData.Data.Config
 {
+	[Serializable]
 	public sealed class TileConfig
 	{
-		public string Image { get; set; } = string.Empty;
+		public string id;
 
-		public TileType Type { get; set; }
+		public Texture2D image;
 
-		public int Weight { get; set; }
+		public TileType type;
+
+		public int weight;
 	}
 }

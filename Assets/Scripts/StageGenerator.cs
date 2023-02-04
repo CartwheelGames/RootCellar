@@ -12,64 +12,66 @@ namespace AssemblyCSharp.AssetsData.Logic
 		public static Stage Generate(GameConfig config, int stageIndex = 0)
 		{
 			// Populate tiles:
-			StageConfig stageConfig = config.Stages[stageIndex];
-			int width = stageConfig.Width;
-			int baseWidth = stageConfig.BaseWidth;
-			string tileSetId = stageConfig.TileSet;
+			StageConfig stageConfig = config.stages[stageIndex];
+			int width = stageConfig.width;
+			int baseWidth = stageConfig.baseWidth;
+			string tileSetId = stageConfig.tileSet;
 			Tile[] tiles = new Tile[width];
 			int halfWidth = width / 2;
 			int halfBaseWidth = baseWidth / 2;
 			int baseStartX = halfWidth - halfBaseWidth;
 			int baseEndX = halfWidth + halfBaseWidth;
-			if (config.TileSets.TryGetValue(tileSetId, out TileSetConfig tileSet))
+			TileSetConfig tileSet = config.tileSets.SingleOrDefault(t => t.id == tileSetId);
+			if (tileSet != null)
 			{
-				int totalWeight = tileSet.Tiles.Sum(x => x.Value.Weight);
-				Dictionary<string, TileConfig> pathTiles = tileSet.Tiles
-					.Where(x => x.Value.Type is TileType.Path)
-					.ToDictionary(x => x.Key, x => x.Value);
-				string[] pathKeys = pathTiles.Keys.ToArray();
-				string[] tileKeys = tileSet.Tiles.Keys.ToArray();
+				int totalWeight = tileSet.tiles.Sum(x => x.weight);
+				List<TileConfig> pathTiles = tileSet.tiles
+					.Where(x => x.type is TileType.Path)
+					.ToList();
+				List<TileConfig> tileKeys = tileSet.tiles;
 				Random random = new();
 				for (int x = 0; x < width; x++)
 				{
 					if (x >= baseStartX && x <= baseEndX)
 					{
 						int randomValue = random.Next(pathTiles.Count);
-						string key = pathKeys[randomValue];
+						TileConfig tile = pathTiles[randomValue];
 						tiles[x] = new Tile()
 						{
-							TileConfigId = key
+							TileConfigId = tile.id
 						};
 					}
 					else
 					{
 						int randomValue = random.Next(totalWeight);
-						for (int t = 0; t < tileSet.Tiles.Count; t++)
+						for (int t = 0; t < tileSet.tiles.Count; t++)
 						{
-							string key = tileKeys[t];
-							TileConfig tile = tileSet.Tiles[key];
-							if (randomValue < tile.Weight)
+							TileConfig tile = tileSet.tiles[t];
+							if (randomValue < tile.weight)
 							{
 								tiles[x] = new Tile()
 								{
-									TileConfigId = key
+									TileConfigId = tile.id
 								};
 								break;
 							}
-							randomValue -= tile.Weight;
+							randomValue -= tile.weight;
 						}
 					}
 				}
 			}
-			foreach (KeyValuePair<int, string> kvp in stageConfig.Structures)
+			foreach (StageConfig.StageStructureInfo structureInfo in stageConfig.structures)
 			{
-				StructureConfig structureConfig = config.Structures[kvp.Value];
-				tiles[halfWidth + kvp.Key].Structure = new Structure()
+				StructureConfig structureConfig = config.structures.SingleOrDefault(s => s.id == structureInfo.structureId);
+				if(structureConfig != null)
 				{
-					ResourceCount = structureConfig.ResourceCount,
-					ResourceType = structureConfig.ResourceType,
-					StructureConfigId = kvp.Value
-				};
+					tiles[halfWidth + structureInfo.x].Structure = new Structure()
+					{
+						ResourceCount = structureConfig.resourceCount,
+						ResourceType = structureConfig.resourceType,
+						StructureConfigId = structureInfo.structureId
+					};
+				}
 			}
 			return new Stage()
 			{

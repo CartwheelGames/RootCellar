@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AssemblyCSharp.AssetsData.Data.Config
 {
+	[Serializable]
 	public sealed class TileSetConfig
 	{
-		public string Image { get; set; } = string.Empty;
+		public string id;
 
-		public Dictionary<string, TileConfig> Tiles { get; set; } = new();
+		public List<TileConfig> tiles = new();
 	}
 }

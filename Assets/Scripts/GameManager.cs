@@ -3,6 +3,7 @@ using AssemblyCSharp.AssetsData.Data;
 using AssemblyCSharp.AssetsData.Data.Config;
 using AssemblyCSharp.AssetsData.Data.State;
 using AssemblyCSharp.AssetsData.Logic;
+using GGJ;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,21 +12,29 @@ namespace AssemblyCSharp.Assets.Scripts
 {
 	public sealed class GameManager : MonoBehaviour
 	{
-		[field: SerializeField]
-		public CharacterMovement Character { get; set; }
+		[SerializeField]
+		public CharacterMovement character;
 
 		public GameState gameState;
 
+		[SerializeField]
+		public StartScreenController startScreen;
+
 		private AppStateManager appStateManager = new();
 
+		[SerializeField]
 		private GameConfig gameConfig;
+
+		[SerializeField]
+		private LandscapeAssembler landscapeAssembler;
 
 		public void Start()
 		{
-			TextAsset gameConfigData = Resources.Load<TextAsset>("gameConfig");
-			gameConfig = JsonUtility.FromJson<GameConfig>(gameConfigData.text);
 			gameState = GenerateStage(gameConfig);
+			startScreen.Initialize(appStateManager);
 			appStateManager.ChangeState(AppState.Title);
+			character.Initialize(gameConfig.playerCharacter);
+			landscapeAssembler.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
 		}
 
 		private static GameState GenerateStage(GameConfig gameConfig)
@@ -33,8 +42,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			Stage stage = StageGenerator.Generate(gameConfig);
 			Character player = new()
 			{
-				BaseSpeed = gameConfig.PlayerCharacter.BaseSpeed,
-				Image = gameConfig.PlayerCharacter.Image,
+				BaseSpeed = gameConfig.playerCharacter.baseSpeed,
 				Name = "Player",
 				X = GetPlayerStartX(gameConfig, stage)
 			};
@@ -47,9 +55,9 @@ namespace AssemblyCSharp.Assets.Scripts
 
 		private static int GetPlayerStartX(GameConfig gameConfig, Stage stage)
 		{
-			HashSet<string> homeIds = gameConfig.Structures
-				.Where(s => s.Value.Type == StructureType.Home)
-				.Select(k => k.Key)
+			HashSet<string> homeIds = gameConfig.structures
+				.Where(s => s.type == StructureType.Home)
+				.Select(k => k.id)
 				.ToHashSet();
 			for (int x = 0; x < stage.Tiles.Length; x++)
 			{
