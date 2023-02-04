@@ -2,7 +2,7 @@
 {
 	public sealed class GameState
 	{
-		public Character Player { get; set; } = new();
+		public Character Character { get; set; } = new();
 
 		public Stage Stage { get; set; }
 	}
