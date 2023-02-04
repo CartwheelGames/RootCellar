@@ -12,6 +12,7 @@ namespace AssemblyCSharp.AssetsData.Data.Config
 
 		public TileType type;
 
+		[Range(0, 100)]
 		public int weight;
 	}
 }
