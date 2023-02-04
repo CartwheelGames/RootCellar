@@ -25,12 +25,16 @@ namespace AssemblyCSharp.Assets.Scripts
 		[SerializeField]
 		private GameConfig gameConfig;
 
+		[SerializeField]
+		private LandscapeAssembler landscapeAssembler;
+
 		public void Start()
 		{
 			gameState = GenerateStage(gameConfig);
 			startScreen.Initialize(appStateManager);
 			appStateManager.ChangeState(AppState.Title);
 			character.Initialize(gameConfig.playerCharacter);
+			landscapeAssembler.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
 		}
 
 		private static GameState GenerateStage(GameConfig gameConfig)

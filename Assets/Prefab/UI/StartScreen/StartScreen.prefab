@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -391,6 +391,7 @@ GameObject:
   - component: {fileID: 9186231229858312651}
   - component: {fileID: 7315356905342856119}
   - component: {fileID: 2746586267681529379}
+  - component: {fileID: 8171458315049555802}
   m_Layer: 5
   m_Name: StartScreen
   m_TagString: Untagged
@@ -433,8 +434,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a16f07c7ade10460e861c76ec267c35e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entireScreen: {fileID: 9186231229858312652}
   animator: {fileID: 2746586267681529379}
+  entireScreen: {fileID: 9186231229858312652}
 --- !u!95 &2746586267681529379
 Animator:
   serializedVersion: 5
@@ -455,6 +456,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!225 &8171458315049555802
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9186231229858312652}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &9186231229879128414
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,7 +533,7 @@ RectTransform:
   m_GameObject: {fileID: 9186231231017404478}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.175, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1348895790944471935}
@@ -532,7 +545,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 6}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9186231231017404475

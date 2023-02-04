@@ -7,41 +7,60 @@ namespace AssemblyCSharp.AssetsData.Logic
 {
 	public class StartScreenController : MonoBehaviour
 	{
-		[SerializeField]
-		private Animator animator;
-
 		private AppStateManager appStateManager;
+
+		[SerializeField]
+		private CanvasGroup canvasGroup;
 
 		[SerializeField]
 		private GameObject entireScreen;
 
-		public void Awake()
-		{
-			animator.Play("OnIdle");
-			entireScreen.SetActive(true);
-		}
+		private float fadeProgress;
+
+		[SerializeField, Range(0f, 10f)]
+		private float fadeTime = 1f;
+
+		public void Awake() => Hide();
 
 		public void Initialize(AppStateManager appStateManager)
 		{
 			appStateManager.AddEnterListener(AppState.Title, Show);
-			appStateManager.AddLeaveListener(AppState.Title, Hide);
+			appStateManager.AddEnterListener(AppState.TitleToGame, StartTransitionToGame);
+			appStateManager.AddLeaveListener(AppState.TitleToGame, Hide);
 			this.appStateManager = appStateManager;
 		}
 
-		public void OnPlayButtonPress()
-		{
-			animator.Play("OnStartButtonClicked", 0);
-			StartCoroutine(WaitThenTurnOff());
-		}
+		public void StartTransitionToGame() => StartCoroutine(TransitionToGame());
 
 		private void Hide() => entireScreen.SetActive(false);
 
-		private void Show() => entireScreen.SetActive(true);
-
-		private IEnumerator WaitThenTurnOff()
+		private void Show()
 		{
-			yield return new WaitForSeconds(10);
+			entireScreen.SetActive(true);
+			canvasGroup.alpha = 1;
+		}
+
+		private IEnumerator TransitionToGame()
+		{
+			fadeProgress = 0;
+			while (fadeProgress < fadeTime)
+			{
+				fadeProgress += Time.deltaTime;
+				canvasGroup.alpha = Mathf.InverseLerp(fadeTime, 0, fadeProgress);
+				yield return null;
+			}
 			appStateManager.ChangeState(AppState.Game);
+		}
+
+		private void Update()
+		{
+			if (appStateManager.CurrentAppState == AppState.Title)
+			{
+				if (Input.anyKeyDown)
+				{
+					appStateManager.ChangeState(AppState.TitleToGame);
+				}
+			}
 		}
 	}
 }
