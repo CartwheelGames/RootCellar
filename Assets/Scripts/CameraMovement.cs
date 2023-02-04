@@ -1,4 +1,4 @@
-﻿using AssemblyCSharp.AssetsData.Data.Config;
+﻿using AssemblyCSharp.Assets.Data.Config;
 using AssemblyCSharp.AssetsData.Data.State;
 using UnityEngine;
 
@@ -6,27 +6,39 @@ namespace AssemblyCSharp.Assets.Scripts
 {
 	public sealed class CameraMovement : MonoBehaviour
 	{
+		private Camera localCamera;
+
+		private CameraConfig cameraConfig;
+
 		private Character character;
 
-		private CharacterConfig characterConfig;
+		private void Awake() => localCamera = GetComponent<Camera>();
 
-		public void Initialize(Character character, CharacterConfig characterConfig)
+		public void Initialize(Character character, CameraConfig cameraConfig)
 		{
 			this.character = character;
-			this.characterConfig = characterConfig;
+			this.cameraConfig = cameraConfig;
 		}
 
-		public void Update()
+		private Vector3 Position
 		{
-			if (character != null && characterConfig != null)
+			get => localCamera.transform.position;
+			set => localCamera.transform.position = value;
+		}
+
+		private void Update()
+		{
+			if (character != null && cameraConfig != null)
 			{
-				float offset = characterConfig.cameraOffset;
+				float offset = cameraConfig.xOffset;
 				if (character.IsFacingLeft)
 				{
 					offset *= -1;
 				}
-				Vector3 target = new(character.X + offset, transform.position.y, transform.position.z);
-				transform.position = Vector3.Lerp(transform.position, target, characterConfig.cameraSpeed * Time.deltaTime);
+				Vector3 target = new(character.X + offset, cameraConfig.yOffset, Position.z);
+				Position = Vector3.Distance(target, Position) > cameraConfig.snapDistance
+					? target
+					: Vector3.Lerp(Position, target, cameraConfig.speed * Time.deltaTime);
 			}
 		}
 	}

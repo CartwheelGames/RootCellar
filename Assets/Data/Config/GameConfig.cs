@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using AssemblyCSharp.Assets.Data.Config;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace AssemblyCSharp.AssetsData.Data.Config
 {
 	public sealed class GameConfig : ScriptableObject
 	{
+		public CameraConfig camera;
+
 		public List<CropConfig> crops;
 
 		public CharacterConfig playerCharacter;

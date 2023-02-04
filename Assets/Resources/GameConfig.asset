@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6a18ccd6a07ee8488c9567398beb30a, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
+  camera:
+    snapDistance: 100
+    speed: 2
+    xOffset: 2
+    yOffset: 2
   crops: []
   playerCharacter:
     baseSpeed: 0.01

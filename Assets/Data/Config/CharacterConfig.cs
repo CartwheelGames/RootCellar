@@ -6,9 +6,5 @@ namespace AssemblyCSharp.AssetsData.Data.Config
 	public sealed class CharacterConfig
 	{
 		public float baseSpeed;
-
-		public float cameraOffset = 1f;
-
-		public float cameraSpeed = 1f;
 	}
 }
