@@ -62,7 +62,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			for (int x = 0; x < stage.Tiles.Length; x++)
 			{
 				Tile tile = stage.Tiles[x];
-				if (tile.Structure?.StructureConfigId != null
+				if (tile?.Structure?.StructureConfigId != null
 					&& homeIds.Contains(tile.Structure.StructureConfigId))
 				{
 					return x;

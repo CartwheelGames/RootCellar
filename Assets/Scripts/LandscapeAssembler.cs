@@ -1,45 +1,43 @@
-using System;
-using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
+using AssemblyCSharp.Assets.Data;
 using AssemblyCSharp.AssetsData.Data.Config;
 using AssemblyCSharp.AssetsData.Data.State;
+using System.Collections.Generic;
 using UnityEngine;
-using AssemblyCSharp.Assets.Data;
 
 namespace AssemblyCSharp.Assets.Scripts
 {
-    public class LandscapeAssembler : MonoBehaviour
-    {
-        private Stage stage;
-        private List<TileSetConfig> tileSets;
-        private GameObject[] tiles;
+	public class LandscapeAssembler : MonoBehaviour
+	{
+		public GameObject tilePrefab;
 
-        public GameObject tilePrefab;
+		private Stage stage;
 
-        public void Initialize(AppStateManager appStateManager, Stage stage, List<TileSetConfig> tileSets)
-        {
-            this.stage = stage;
-            this.tileSets = tileSets;
+		private GameObject[] tiles;
 
-            appStateManager.AddEnterListener(AppState.Game, Generate);
-            appStateManager.AddLeaveListener(AppState.Game, Cleanup);
+		private List<TileSetConfig> tileSets;
 
-        }
+		public void Initialize(AppStateManager appStateManager, Stage stage, List<TileSetConfig> tileSets)
+		{
+			this.stage = stage;
+			this.tileSets = tileSets;
 
-        private void Generate() {
-            Debug.Log("whaaaaat");
-            // Draw here
-            tiles = new GameObject[stage.Tiles.Length];
-            for (int x = 0; x < stage.Tiles.Length; x++) {
-                Debug.Log(stage.Tiles.Length);
-                tiles[x] = Instantiate<GameObject> (tilePrefab, new Vector3(x, 0, 0),  Quaternion.identity);
-            }
-        }
+			appStateManager.AddEnterListener(AppState.Game, Generate);
+			appStateManager.AddLeaveListener(AppState.Game, Cleanup);
+		}
 
+		private void Cleanup()
+		{
+			// Clear Sub objects here
+		}
 
-        private void Cleanup() {
-            // Clear Sub objects here
-        }
-    }
+		private void Generate()
+		{
+			// Draw here
+			tiles = new GameObject[stage.Tiles.Length];
+			for (int x = 0; x < stage.Tiles.Length; x++)
+			{
+				tiles[x] = Instantiate(tilePrefab, new Vector3(x, 0), Quaternion.identity);
+			}
+		}
+	}
 }
