@@ -12,8 +12,6 @@ namespace AssemblyCSharp.AssetsData.Data.State
 
 		public bool IsFacingLeft { get; set; }
 
-		public string Name { get; set; } = string.Empty;
-
 		public float X { get; set; }
 	}
 }
