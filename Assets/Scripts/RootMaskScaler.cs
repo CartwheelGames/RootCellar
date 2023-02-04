@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RootMaskScaler : MonoBehaviour
 {
-    [Range(0.01f,1)]
+    [Range(0.01f,20)]
     [SerializeField] private float _rootMask = 0.5f;
     [SerializeField] private RectTransform _mask;
     [SerializeField] private RectTransform _roots;
@@ -16,7 +16,6 @@ public class RootMaskScaler : MonoBehaviour
         
         Vector3 newMaskScale = new Vector3(_rootMask, _rootMask, _rootMask);
 
-        float newRootScaler = currentRootScale + (-1f * (currentMaskScale - _rootMask));
         Vector3 newRootScale = new Vector3(1/_rootMask, 1/_rootMask, 1/_rootMask);
 
         _mask.localScale = newMaskScale;
