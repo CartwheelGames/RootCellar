@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace GGJ
 {
-	/*public class CharacterProp : DynamicProp
+	public class CharacterProp : MonoBehaviour
 	{
-		[SerializeField]
+		/*[SerializeField]
 		private float moveSpeed = 8f;
 		[SerializeField]
 		private float moveColRadius = 0.225f;
@@ -24,65 +24,33 @@ namespace GGJ
 			get => transform.position;
 			set => transform.position = new Vector3(Mathf.Clamp(value.x, 0f, maxX), Mathf.Clamp(value.y, 0f, maxY));
 		}
-		
-		public override void Initialize(Level level)
-		{
-			maxX = level.Width;
-			maxY = level.Height;
-		}
 
 		public enum Direction {
 			Left,
 			Right,
-			Up,
-			Down,
 			None
 		}
 
 		private void Update()
 		{
 			float horizontal = Input.GetAxis("Horizontal");
-			float vertical = Input.GetAxis("Vertical");
 			
 			// Input -> bool
-			bool pressingUp = vertical > Mathf.Epsilon;
-			bool pressingDown = vertical < -Mathf.Epsilon;
-			bool notPressingUpOrDown = !pressingUp && !pressingDown;
 			bool pressingLeft = horizontal < -Mathf.Epsilon;
 			bool pressingRight = horizontal > Mathf.Epsilon;
 			bool notPressingLeftOrRight = !pressingLeft && !pressingRight;
 
 			// bool -> Direction
-			Direction verticalDirection = pressingUp ? Direction.Up : Direction.Down;
-			verticalDirection = notPressingUpOrDown ? Direction.None : verticalDirection;
 			Direction horizontalDirection = pressingLeft ? Direction.Left : Direction.Right;
 			horizontalDirection = notPressingLeftOrRight ? Direction.None : horizontalDirection;
 
 			// Direction -> SetState()
-			switch (verticalDirection)
+			switch (horizontalDirection)
 			{
-				case Direction.Up when horizontalDirection == Direction.Left:
-					SetState(CharacterState.UpLeft);
-					break;
-				case Direction.Up when horizontalDirection == Direction.Right:
-					SetState(CharacterState.UpRight);
-					break;
-				case Direction.Up:
-					SetState(CharacterState.Up);
-					break;
-				case Direction.Down when horizontalDirection == Direction.Left:
-					SetState(CharacterState.DownLeft);
-					break;
-				case Direction.Down when horizontalDirection == Direction.Right:
-					SetState(CharacterState.DownRight);
-					break;
-				case Direction.Down:
-					SetState(CharacterState.Down);
-					break;
-				case Direction.None when horizontalDirection == Direction.Left:
+				case Direction.Left:
 					SetState(CharacterState.Left);
 					break;
-				case Direction.None when horizontalDirection == Direction.Right:
+				case Direction.Right:
 					SetState(CharacterState.Right);
 					break;
 				case Direction.None:
@@ -90,7 +58,7 @@ namespace GGJ
 					break;
 			}
 			
-			Vector2 input = new Vector2(horizontal, vertical);
+			Vector2 input = new Vector2(horizontal, 0);
 			ApplyMovement(input);
 		}
 
@@ -149,15 +117,9 @@ namespace GGJ
 				case CharacterState.Idle: return "Idle";
 				case CharacterState.Left: return "WalkLeft";
 				case CharacterState.Right: return "WalkRight";
-				case CharacterState.Up: return "WalkUp";
-				case CharacterState.Down: return "WalkDown";
-				case CharacterState.UpLeft: return "WalkUpLeft";
-				case CharacterState.UpRight: return "WalkUpRight";
-				case CharacterState.DownLeft: return "WalkDownLeft";
-				case CharacterState.DownRight: return "WalkDownRight";
 				default:
 					throw new ArgumentOutOfRangeException(nameof(state), state, null);
 			}
-		}
-	}*/
+		}*/
+	}
 }
