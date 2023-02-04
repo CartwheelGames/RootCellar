@@ -18,23 +18,27 @@ namespace AssemblyCSharp.Assets.Scripts
 
 		public void Update()
 		{
-			float horizontalInput = Input.GetAxis("Horizontal");
-			float verticalInput = Input.GetAxis("Vertical");
-			if (horizontalInput < -float.Epsilon)
+			if (character != null)
 			{
-				transform.Translate(Vector2.left * speed);
-				character.IsFacingLeft = true;
+				float horizontalInput = Input.GetAxis("Horizontal");
+				float verticalInput = Input.GetAxis("Vertical");
+				if (horizontalInput < -float.Epsilon)
+				{
+					transform.Translate(Vector2.left * speed);
+					character.IsFacingLeft = true;
+				}
+				else if (horizontalInput > float.Epsilon)
+				{
+					transform.Translate(Vector2.right * speed);
+					character.IsFacingLeft = false;
+				}
+				else if (verticalInput < -float.Epsilon)
+				{
+					Debug.Log("Down");
+				}
+
+				character.X = transform.position.x;
 			}
-			else if (horizontalInput > float.Epsilon)
-			{
-				transform.Translate(Vector2.right * speed);
-				character.IsFacingLeft = false;
-			}
-			else if (verticalInput < -float.Epsilon)
-			{
-				Debug.Log("Down");
-			}
-			character.X = transform.position.x;
 		}
 	}
 }
