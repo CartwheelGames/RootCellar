@@ -12,7 +12,7 @@ namespace AssemblyCSharp.Assets.Scripts
 	public sealed class GameManager : MonoBehaviour
 	{
 		[SerializeField]
-		public CharacterMovement character; // TODO: rename to characterMovement
+		public CharacterMovement characterMovement;
 
 		public GameState gameState;
 
@@ -46,7 +46,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			appStateManager.ChangeState(AppState.Title);
 			tileManager.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
 			cameraMovement.Initialize(gameState.Character, gameConfig.camera);
-			character.Initialize(gameConfig, gameState.Character, tileManager);
+			characterMovement.Initialize(gameConfig, gameState.Character, tileManager);
 		}
 
 		private static GameState GenerateStage(GameConfig gameConfig)

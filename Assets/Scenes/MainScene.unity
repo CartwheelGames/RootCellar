@@ -548,6 +548,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dfd395dbbf7023459cfe60c8232061f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &766832111 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5603704691186317233, guid: c28f81d74c63f4ee59e55c85036e88ee, type: 3}
+  m_PrefabInstance: {fileID: 252716662}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86ac136520074465bb8c54ab73c7ed19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1038010377
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,9 +588,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e44d35d6553236748af3299526981972, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 766832107}
+  characterMovement: {fileID: 766832107}
   startScreen: {fileID: 1325636777}
   staminaBar: {fileID: 109351678}
+  inventoryUI: {fileID: 766832111}
   cameraMovement: {fileID: 519420033}
   gameConfig: {fileID: 11400000, guid: 658c542a557242c4296a75741a95f595, type: 2}
   tileManager: {fileID: 640319986}
