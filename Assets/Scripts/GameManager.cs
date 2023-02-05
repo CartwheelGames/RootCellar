@@ -25,6 +25,9 @@ namespace AssemblyCSharp.Assets.Scripts
 		private AppStateManager appStateManager = new();
 
 		[SerializeField]
+		private CameraMovement cameraMovement;
+
+		[SerializeField]
 		private GameConfig gameConfig;
 
 		[SerializeField]
@@ -38,6 +41,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			appStateManager.ChangeState(AppState.Title);
 			character.Initialize(gameConfig.playerCharacter, gameState.Character);
 			landscapeAssembler.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
+			cameraMovement.Initialize(gameState.Character, gameConfig.camera);
 		}
 
 		private static GameState GenerateStage(GameConfig gameConfig)
@@ -45,7 +49,6 @@ namespace AssemblyCSharp.Assets.Scripts
 			Stage stage = StageGenerator.Generate(gameConfig);
 			Character player = new()
 			{
-				BaseSpeed = gameConfig.playerCharacter.baseSpeed,
 				X = GetPlayerStartX(gameConfig, stage)
 			};
 			return new GameState()

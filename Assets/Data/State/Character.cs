@@ -4,10 +4,6 @@ namespace AssemblyCSharp.AssetsData.Data.State
 {
 	public class Character
 	{
-		public float BaseSpeed { get; set; }
-
-		public string Image { get; set; } = string.Empty;
-
 		public Dictionary<string, int> Inventory { get; set; } = new();
 
 		public int Stamina = 50; // out of 100
