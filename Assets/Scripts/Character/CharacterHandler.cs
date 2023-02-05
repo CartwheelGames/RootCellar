@@ -51,7 +51,6 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 			characterStateManager.AddEnterListener(CharacterState.Harvest, () => animate("Idle"));
 			characterStateManager.AddEnterListener(CharacterState.Hit, () => animate("Idle"));
 			characterStateManager.AddEnterListener(CharacterState.Plant, () => animate("Idle"));
-			characterStateManager.AddEnterListener(CharacterState.Water, () => animate("Idle"));
 			characterStateManager.AddEnterListener(CharacterState.Walk, () =>
 			{
 				animate(gameState.Character.IsFacingLeft ? "WalkLeft" : "WalkRight");
@@ -205,6 +204,7 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 					Debug.LogWarning($"No crop was found with the ID: {tile.data.CropConfigId}");
 				}
 				tile.data.ActionProgress = 0f;
+				tile.data.GrowthStep = 0;
 				EnterIdleState();
 			}
 			else
@@ -312,10 +312,6 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 					HarvestCrop(tile);
 					break;
 
-				case TileType.Growing:
-					WaterPlot(tile);
-					break;
-
 				case TileType.Plot:
 					PlantSeed(tile);
 					break;
@@ -338,30 +334,10 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 
 				case TileType.Path:
 				case TileType.None:
+				case TileType.Growing:
 				default:
 					EnterIdleState();
 					break;
-			}
-		}
-
-		/// <remarks> Ignore for MVP </remarks>
-		private void WaterPlot(TileHandler tile)
-		{
-			if (tile.data.ActionProgress == 0)
-			{
-				Debug.Log("Watering plot");
-			}
-			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.waterPlotSpeed;
-			if (tile.data.ActionProgress >= 1f)
-			{
-				tile.data.Water = 1f;
-				tile.data.ActionProgress = 0f;
-				EnterIdleState();
-				Debug.Log("Plot watered");
-			}
-			else
-			{
-				EnterState(CharacterState.Water);
 			}
 		}
 	}

@@ -20,7 +20,7 @@ namespace AssemblyCSharp.AssetsData.Data.Config
 
 		public List<Sprite> stepSprites = new();
 
-		public float stepTime = 10f;
+		public float growSpeed = 0.1f;
 
 		public int weight = 1;
 

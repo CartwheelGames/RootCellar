@@ -6,13 +6,17 @@ namespace AssemblyCSharp.Assets.Scripts
 {
 	public sealed class CameraMovement : MonoBehaviour
 	{
-		private Camera localCamera;
-
 		private CameraConfig cameraConfig;
 
 		private CharacterData character;
 
-		private void Awake() => localCamera = GetComponent<Camera>();
+		public Camera LocalCamera { get; private set; }
+
+		private Vector3 Position
+		{
+			get => LocalCamera.transform.position;
+			set => LocalCamera.transform.position = value;
+		}
 
 		public void Initialize(CharacterData character, CameraConfig cameraConfig)
 		{
@@ -20,11 +24,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			this.cameraConfig = cameraConfig;
 		}
 
-		private Vector3 Position
-		{
-			get => localCamera.transform.position;
-			set => localCamera.transform.position = value;
-		}
+		private void Awake() => LocalCamera = GetComponent<Camera>();
 
 		private void Update()
 		{

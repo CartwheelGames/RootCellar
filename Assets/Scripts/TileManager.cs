@@ -22,9 +22,9 @@ namespace AssemblyCSharp.Assets.Scripts
 
 		private Stage stage;
 
-		private TileSetConfig tileSet;
-
 		public TileHandler[] TileHandlers { get; private set; } = Array.Empty<TileHandler>();
+
+		private TileSetConfig tileSet;
 
 		public void AssignRandomCropToTile(TileHandler tileHandler)
 		{

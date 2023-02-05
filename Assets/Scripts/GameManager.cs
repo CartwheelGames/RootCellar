@@ -30,6 +30,8 @@ namespace AssemblyCSharp.Assets.Scripts
 		private GameState gameState;
 
 		[SerializeField]
+		private GrowthManager growthManager;
+		[SerializeField]
 		private InventoryUI inventoryUI;
 
 		[SerializeField]
@@ -52,24 +54,6 @@ namespace AssemblyCSharp.Assets.Scripts
 
 		[SerializeField]
 		private TimeManager timeManager;
-
-		public void Start()
-		{
-			appStateTransitioner.Initialize(appStateManager);
-			gameState = GenerateStage(gameConfig);
-			overlayManager.Initialize(appStateManager);
-			staminaBar.Initialize(appStateManager, gameConfig.playerCharacter, gameState.Character);
-			inventoryUI.Initialize(gameState.Character, gameConfig);
-			moneyCounter.Initialize(gameConfig.playerCharacter, gameState.Character);
-
-			appStateManager.ChangeState(AppState.Title);
-			tileManager.Initialize(appStateManager, gameState.Stage, gameConfig);
-			cameraMovement.Initialize(gameState.Character, gameConfig.camera);
-			characterActions.Initialize(appStateManager, gameConfig, gameState, tileManager);
-			timeManager.Initialize(appStateManager, gameState);
-			moundManager.Initialize(appStateManager, gameConfig, gameState, tileManager);
-			parallaxManager.Initialize(appStateManager, cameraMovement.GetComponent<Camera>(), gameConfig.parallaxLayers);
-		}
 
 		private static GameState GenerateStage(GameConfig gameConfig)
 		{
@@ -102,6 +86,32 @@ namespace AssemblyCSharp.Assets.Scripts
 				}
 			}
 			return 0;
+		}
+
+		private void Start()
+		{
+			appStateTransitioner.Initialize(appStateManager);
+			gameState = GenerateStage(gameConfig);
+			overlayManager.Initialize(appStateManager);
+			staminaBar.Initialize(appStateManager, gameConfig.playerCharacter, gameState.Character);
+			inventoryUI.Initialize(gameState.Character, gameConfig);
+			moneyCounter.Initialize(gameConfig.playerCharacter, gameState.Character);
+			appStateManager.ChangeState(AppState.Title);
+			tileManager.Initialize(appStateManager, gameState.Stage, gameConfig);
+			cameraMovement.Initialize(gameState.Character, gameConfig.camera);
+			characterActions.Initialize(appStateManager, gameConfig, gameState, tileManager);
+			timeManager.Initialize(appStateManager, gameState);
+			moundManager.Initialize(appStateManager, gameConfig, gameState, tileManager);
+			growthManager.Initialize(appStateManager, gameConfig, gameState, tileManager);
+			parallaxManager.Initialize(appStateManager, cameraMovement.LocalCamera, gameConfig.parallaxLayers);
+		}
+
+		private void Update()
+		{
+			if (Input.GetKeyDown(KeyCode.Escape))
+			{
+				Application.Quit();
+			}
 		}
 	}
 }

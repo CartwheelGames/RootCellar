@@ -7,7 +7,6 @@
 		Walk,
 		Plow,
 		Chop,
-		Water,
 		Harvest,
 		Plant,
 		Forage,

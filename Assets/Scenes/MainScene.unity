@@ -741,6 +741,7 @@ GameObject:
   - component: {fileID: 1038010380}
   - component: {fileID: 1038010381}
   - component: {fileID: 1038010382}
+  - component: {fileID: 1038010383}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -764,6 +765,7 @@ MonoBehaviour:
   cameraMovement: {fileID: 519420033}
   characterActions: {fileID: 766832107}
   gameConfig: {fileID: 11400000, guid: 658c542a557242c4296a75741a95f595, type: 2}
+  growthManager: {fileID: 1038010383}
   inventoryUI: {fileID: 766832111}
   moneyCounter: {fileID: 1723363935}
   moundManager: {fileID: 1038010381}
@@ -826,6 +828,18 @@ MonoBehaviour:
   endToTitleTime: 1
   gameToEndTime: 1
   titleToGameTime: 1
+--- !u!114 &1038010383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1038010377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33163266369e8cb43ad7820389ff4875, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1325636774
 PrefabInstance:
   m_ObjectHideFlags: 0

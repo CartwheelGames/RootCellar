@@ -1,21 +1,20 @@
 using AssemblyCSharp.Assets.Data;
 using AssemblyCSharp.AssetsData.Data.Config;
 using AssemblyCSharp.AssetsData.Data.State;
-using System;
 using UnityEngine;
 
 namespace AssemblyCSharp.Assets.Scripts.UI
 {
 	public class StaminaBar : MonoBehaviour
 	{
-		private CharacterData _character;
-
-		private CharacterConfig _characterConfig;
-
 		[SerializeField]
 		private RectTransform _fill;
 
 		private AppStateManager appStateManager;
+
+		private CharacterData character;
+
+		private CharacterConfig characterConfig;
 
 		public void Initialize(
 			AppStateManager appStateManager,
@@ -23,22 +22,22 @@ namespace AssemblyCSharp.Assets.Scripts.UI
 			CharacterData character)
 		{
 			this.appStateManager = appStateManager;
-			_character = character;
-			_characterConfig = characterConfig;
+			this.character = character;
+			this.characterConfig = characterConfig;
 		}
 
 		private void Update()
 		{
-			if (_character != null && appStateManager.CurrentState == AppState.Game)
+			if (character != null && appStateManager.CurrentState == AppState.Game)
 			{
 				// Update the UI bar
-				float newFillPercentage = _character.Stamina / 100f;
+				float newFillPercentage = character.Stamina / 100f;
 				newFillPercentage = Mathf.Clamp01(newFillPercentage);
 				_fill.localScale = new Vector3(newFillPercentage, _fill.localScale.y, _fill.localScale.z);
 
 				// Over time, Stamina naturally decreases
-				_character.Stamina -= Math.Max(0, _characterConfig.staminaDecreasePerFrame);
-				if (_character.Stamina <= 0)
+				character.Stamina -= Time.deltaTime * characterConfig.staminaDecreaseSpeed;
+				if (character.Stamina <= 0)
 				{
 					appStateManager.ChangeState(AppState.GameToLose);
 				}

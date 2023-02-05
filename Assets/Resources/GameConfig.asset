@@ -24,9 +24,9 @@ MonoBehaviour:
     seedChance: 50
     seedImage: {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
     stepSprites:
+    - {fileID: 0}
     - {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
-    - {fileID: 21300000, guid: 9b780633e713440f3ba089cb3f0f7bdd, type: 3}
-    stepTime: 10
+    growSpeed: 0.1
     weight: 1
     yield: 1
   - color: {r: 0.7803922, g: 0.454902, b: 0.5647059, a: 1}
@@ -35,9 +35,9 @@ MonoBehaviour:
     seedChance: 50
     seedImage: {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
     stepSprites:
+    - {fileID: 0}
     - {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
-    - {fileID: 21300000, guid: 1dd92d8d0417f478698e7c25d55fe86a, type: 3}
-    stepTime: 10
+    growSpeed: 0.1
     weight: 1
     yield: 1
   - color: {r: 0.77647066, g: 0.2392157, b: 0.454902, a: 1}
@@ -46,8 +46,9 @@ MonoBehaviour:
     seedChance: 50
     seedImage: {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
     stepSprites:
+    - {fileID: 0}
     - {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
-    stepTime: 10
+    growSpeed: 0.1
     weight: 1
     yield: 1
   playerCharacter:
@@ -57,9 +58,8 @@ MonoBehaviour:
     forageBushSpeed: 1
     hitRockSpeed: 1
     plowDirtSpeed: 1
-    waterPlotSpeed: 1
     staminaGrowth: 2
-    staminaDecreasePerFrame: 0.001
+    staminaDecreaseSpeed: 0.1
   stages:
   - baseWidth: 10
     id: 

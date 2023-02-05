@@ -4,6 +4,8 @@
 	{
 		public float ActionProgress { get; set; }
 
+		public int GrowthStep { get; set; }
+
 		public string CropConfigId { get; set; }
 
 		public Structure Structure { get; set; }
