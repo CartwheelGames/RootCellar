@@ -406,7 +406,7 @@ GameObject:
   - component: {fileID: 640319987}
   - component: {fileID: 640319986}
   m_Layer: 0
-  m_Name: Landscape
+  m_Name: Tile Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -421,10 +421,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 640319985}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de4c71f6b5f9b4d0bb79d28b1aacfc7b, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c643990acf1489438baae4b8f83589d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 6507018662977657722, guid: ee8f9e3c639b549de8a566f589d5125f, type: 3}
+  tilePrefab: {fileID: -619728439091590119, guid: ee8f9e3c639b549de8a566f589d5125f, type: 3}
 --- !u!4 &640319987
 Transform:
   m_ObjectHideFlags: 0
@@ -582,7 +582,7 @@ MonoBehaviour:
   staminaBar: {fileID: 109351678}
   cameraMovement: {fileID: 519420033}
   gameConfig: {fileID: 11400000, guid: 658c542a557242c4296a75741a95f595, type: 2}
-  landscapeAssembler: {fileID: 640319986}
+  tileManager: {fileID: 640319986}
 --- !u!4 &1038010379
 Transform:
   m_ObjectHideFlags: 0

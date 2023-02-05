@@ -10,6 +10,7 @@ namespace AssemblyCSharp.AssetsData.Data.State
 
 		public bool IsFacingLeft { get; set; }
 
-		public float X { get; set; }
+		/// <remarks> The x index of the current tile the character is at </remarks>
+		public int X { get; set; }
 	}
 }

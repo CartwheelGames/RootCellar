@@ -31,7 +31,7 @@ namespace AssemblyCSharp.Assets.Scripts
 		private GameConfig gameConfig;
 
 		[SerializeField]
-		private TileManager landscapeAssembler;
+		private TileManager tileManager;
 
 		public void Start()
 		{
@@ -39,9 +39,9 @@ namespace AssemblyCSharp.Assets.Scripts
 			startScreen.Initialize(appStateManager);
 			staminaBar.Initialize(gameConfig.playerCharacter, gameState.Character);
 			appStateManager.ChangeState(AppState.Title);
-			character.Initialize(gameConfig.playerCharacter, gameState.Character);
-			landscapeAssembler.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
+			tileManager.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
 			cameraMovement.Initialize(gameState.Character, gameConfig.camera);
+			character.Initialize(gameConfig.playerCharacter, gameState.Character, tileManager);
 		}
 
 		private static GameState GenerateStage(GameConfig gameConfig)
