@@ -54,18 +54,17 @@ namespace AssemblyCSharp.Assets.Scripts
 			Stage stage = StageGenerator.Generate(gameConfig);
 			Character player = new()
 			{
-				X = GetPlayerStartX(gameConfig, stage)
+				X = GetPlayerStartX(gameConfig, stage),
+				// TODO: REMOVE - just for testing inventory
+				// For now, set inventory to a random collection
+				Inventory = new Dictionary<string, int>()
+				{
+					{ "tempRedBerry", 1 },
+					{ "tempBlueBerry", 1 },
+					{ "tempPinkBerry", 1 }
+				}
 			};
-			
-			// TODO: REMOVE - just for testing inventory
-			// For now, set inventory to a random collection
-			player.Inventory = new Dictionary<string, int>()
-			{
-				{ "tempRedBerry", 1 },
-				{ "tempBlueBerry", 1 },
-				{ "tempPinkBerry", 1 }
-			};
-				
+
 			return new GameState()
 			{
 				Stage = stage,

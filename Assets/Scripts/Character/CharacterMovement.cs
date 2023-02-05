@@ -2,7 +2,6 @@ using AssemblyCSharp.AssetsData.Data;
 using AssemblyCSharp.AssetsData.Data.Config;
 using AssemblyCSharp.AssetsData.Data.State;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace AssemblyCSharp.Assets.Scripts
@@ -14,6 +13,7 @@ namespace AssemblyCSharp.Assets.Scripts
 		private GameConfig gameConfig;
 
 		private TileManager tileManager;
+
 		private CharacterConfig CharacterConfig => gameConfig?.playerCharacter;
 
 		private float Speed => gameConfig?.playerCharacter != null
@@ -82,44 +82,6 @@ namespace AssemblyCSharp.Assets.Scripts
 			}
 		}
 
-		private void HarvestCrop(TileHandler tile)
-		{
-			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.digMoundSpeed;
-			if (tile.data.ActionProgress >= 1f)
-			{
-				tile.data.ActionProgress = 0f;
-				CropConfig cropConfig = gameConfig.crops.SingleOrDefault(c => c.id == tile.data.CropConfigId);
-				character.Inventory[cropConfig.id] += cropConfig.yield;
-				tile.data.CropConfigId = string.Empty;
-				tileManager.SetTileType(tile, TileType.Plot);
-			}
-		}
-
-
-		private void PlantSeed(TileHandler tile)
-		{
-			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.digMoundSpeed;
-			if (tile.data.ActionProgress >= 1f)
-			{
-				tileManager.SetTileType(tile, TileType.Crop);
-				tile.data.ActionProgress = 0f;
-				if (!string.IsNullOrEmpty(character.CurrentItemId)
-					&& character.Inventory.ContainsKey(character.CurrentItemId))
-				{
-					CropConfig cropConfig = gameConfig.crops.SingleOrDefault(c => c.id == character.CurrentItemId);
-					tile.data.CropConfigId = cropConfig.id;
-					System.Random random = new();
-					if(random.Next(100) > cropConfig.seedChance)
-					{
-						character.Inventory[cropConfig.id]++;
-					}
-				}
-				tileManager.SetTileType(tile, TileType.Growing);
-				tile.data.CropConfigId = string.Empty;
-			}
-		}
-
-
 		private void DigMound(TileHandler tile)
 		{
 			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.digMoundSpeed;
@@ -154,6 +116,29 @@ namespace AssemblyCSharp.Assets.Scripts
 			}
 		}
 
+		private void HarvestCrop(TileHandler tile)
+		{
+			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.digMoundSpeed;
+			if (tile.data.ActionProgress >= 1f)
+			{
+				tile.data.ActionProgress = 0f;
+				CropConfig cropConfig = gameConfig.crops.SingleOrDefault(c => c.id == tile.data.CropConfigId);
+				if (cropConfig != null)
+				{
+					character.Inventory[cropConfig.id] += cropConfig.yield;
+					tile.data.CropConfigId = string.Empty;
+					tileManager.SetTileType(tile, TileType.Plot);
+					tile.topRenderer.sprite = null;
+					tile.frontRenderer.sprite = null;
+					System.Random random = new();
+					if (random.Next(100) > cropConfig.seedChance)
+					{
+						character.Inventory[cropConfig.id]++;
+					}
+				}
+			}
+		}
+
 		/// <remarks> Ignore for MVP </remarks>
 		private void HitRock(TileHandler tile)
 		{
@@ -162,6 +147,26 @@ namespace AssemblyCSharp.Assets.Scripts
 			{
 				tileManager.SetTileType(tile, TileType.Dirt);
 				tile.data.ActionProgress = 0f;
+			}
+		}
+
+		private void PlantSeed(TileHandler tile)
+		{
+			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.digMoundSpeed;
+			if (tile.data.ActionProgress >= 1f)
+			{
+				tileManager.SetTileType(tile, TileType.Growing);
+				tile.data.ActionProgress = 0f;
+				if (!string.IsNullOrEmpty(character.CurrentItemId)
+					&& character.Inventory.ContainsKey(character.CurrentItemId))
+				{
+					CropConfig cropConfig = gameConfig.crops.SingleOrDefault(c => c.id == character.CurrentItemId);
+					tile.data.CropConfigId = cropConfig.id;
+					if (cropConfig.images.Count > 0)
+					{
+						tile.topRenderer.sprite = cropConfig.images[0];
+					}
+				}
 			}
 		}
 

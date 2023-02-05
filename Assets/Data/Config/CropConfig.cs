@@ -13,12 +13,12 @@ namespace AssemblyCSharp.AssetsData.Data.Config
 
 		public string id;
 
-		public List<Texture2D> imagesByDay = new();
+		public List<Sprite> images = new();
 
 		/// <remarks> Out of 100 </remarks>
 		public byte seedChance;
 
-		public Texture2D seedImage;
+		public Sprite seedImage;
 
 		public int weight = 1;
 
