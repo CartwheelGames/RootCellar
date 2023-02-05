@@ -37,7 +37,7 @@ namespace AssemblyCSharp.Assets.Scripts
 		{
 			gameState = GenerateStage(gameConfig);
 			startScreen.Initialize(appStateManager);
-			staminaBar.Initialize(gameState.Character);
+			staminaBar.Initialize(gameConfig.playerCharacter, gameState.Character);
 			appStateManager.ChangeState(AppState.Title);
 			character.Initialize(gameConfig.playerCharacter, gameState.Character);
 			landscapeAssembler.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
