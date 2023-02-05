@@ -17,5 +17,8 @@ namespace AssemblyCSharp.AssetsData.Data.Config
 		public List<StructureConfig> structures;
 
 		public List<TileSetConfig> tileSets;
+
+		public List<TileSetConfig> backgroundSets;
+
 	}
 }
