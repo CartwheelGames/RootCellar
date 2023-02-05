@@ -61,8 +61,8 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 		{
 			if (gameState != null && tileManager != null && appStateManager.CurrentState == AppState.Game)
 			{
-				float horizontalInput = Input.GetAxis("Horizontal");
-				float verticalInput = Input.GetAxis("Vertical");
+				float horizontalInput = Input.GetAxisRaw("Horizontal");
+				float verticalInput = Input.GetAxisRaw("Vertical");
 				if (verticalInput < -float.Epsilon)
 				{
 					AssignCharacterX();
@@ -77,6 +77,10 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 				else if (horizontalInput < -float.Epsilon)
 				{
 					transform.Translate(Vector2.left * Speed);
+					if (transform.position.x < 0)
+					{
+						transform.position = new Vector3(0, transform.position.y, transform.position.z);
+					}
 					AssignCharacterX();
 					CharacterData.IsFacingLeft = true;
 					EnterState(CharacterState.Walk);
@@ -84,6 +88,10 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 				else if (horizontalInput > float.Epsilon)
 				{
 					transform.Translate(Vector2.right * Speed);
+					if (transform.position.x > gameState.Stage.Tiles.Length - 1)
+					{
+						transform.position = new Vector3(gameState.Stage.Tiles.Length - 1, transform.position.y, transform.position.z);
+					}
 					AssignCharacterX();
 					CharacterData.IsFacingLeft = false;
 					EnterState(CharacterState.Walk);
@@ -193,11 +201,12 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 							if (CharacterData.Stamina >= 100f)
 							{
 								CharacterData.Stamina = 100f;
+								CharacterData.Money++;
 							}
 						}
 						else
 						{
-							CharacterData.Money += 1;
+							CharacterData.Money++;
 						}
 					}
 					tile.data.CropConfigId = string.Empty;

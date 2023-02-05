@@ -8,9 +8,11 @@ namespace AssemblyCSharp.Assets.Scripts
 	{
 		private CameraConfig cameraConfig;
 
-		private CharacterData character;
+		private GameState gameState;
 
 		public Camera LocalCamera { get; private set; }
+
+		private CharacterData CharacterData => gameState.Character;
 
 		private Vector3 Position
 		{
@@ -18,9 +20,9 @@ namespace AssemblyCSharp.Assets.Scripts
 			set => LocalCamera.transform.position = value;
 		}
 
-		public void Initialize(CharacterData character, CameraConfig cameraConfig)
+		public void Initialize(GameState gameState, CameraConfig cameraConfig)
 		{
-			this.character = character;
+			this.gameState = gameState;
 			this.cameraConfig = cameraConfig;
 		}
 
@@ -28,17 +30,29 @@ namespace AssemblyCSharp.Assets.Scripts
 
 		private void Update()
 		{
-			if (character != null && cameraConfig != null)
+			if (CharacterData != null && cameraConfig != null)
 			{
 				float offset = cameraConfig.xOffset;
-				if (character.IsFacingLeft)
+				if (CharacterData.IsFacingLeft)
 				{
 					offset *= -1;
 				}
-				Vector3 target = new(character.X + offset, cameraConfig.yOffset, Position.z);
+				Vector3 target = new(CharacterData.X + offset, cameraConfig.yOffset, Position.z);
 				Position = Vector3.Distance(target, Position) > cameraConfig.snapDistance
 					? target
 					: Vector3.Lerp(Position, target, cameraConfig.speed * Time.deltaTime);
+				const float xMargin = 0.5f;
+				float halfScreenWidth = LocalCamera.orthographicSize * LocalCamera.aspect;
+				float leftExtent = halfScreenWidth - xMargin;
+				float rightExtent = gameState.Stage.Tiles.Length - halfScreenWidth - xMargin;
+				if (Position.x < leftExtent)
+				{
+					Position = new Vector3(leftExtent, cameraConfig.yOffset, Position.z);
+				}
+				else if (Position.x > rightExtent)
+				{
+					Position = new Vector3(rightExtent, cameraConfig.yOffset, Position.z);
+				}
 			}
 		}
 	}
