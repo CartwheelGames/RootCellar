@@ -29,7 +29,7 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 		{
 			if (character != null && !string.IsNullOrEmpty(character.CurrentItemId))
 			{
-				if (currentCropConfig == null || currentCropConfig.id != character.CurrentItemId)
+				if (currentCropConfig == null || currentCropConfig.id != character.CurrentItemId || inventoryDisplay.sprite == null)
 				{
 					currentCropConfig = gameConfig.crops.SingleOrDefault(c => c.id == character.CurrentItemId);
 					if (currentCropConfig != null)
