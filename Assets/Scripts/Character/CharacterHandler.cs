@@ -187,7 +187,14 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 				{
 					for (int i = 0; i < cropConfig.yield; i++)
 					{
-						CharacterData.AddItem(cropConfig.id);
+						if (CharacterData.Stamina < 100f)
+						{
+							CharacterData.Stamina += gameConfig.playerCharacter.staminaGrowth;
+						}
+						else
+						{
+							CharacterData.Money += 1;
+						}
 					}
 					tile.data.CropConfigId = string.Empty;
 					tileManager.SetTileType(tile, TileType.Plot);

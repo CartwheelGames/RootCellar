@@ -36,13 +36,19 @@ namespace AssemblyCSharp.Assets.Scripts
 		{
 			if (appStateManager != null && appStateManager.CurrentState == Data.AppState.Game)
 			{
+				int growthOrCropCount = 0;
 				foreach (TileHandler tile in tileManager.TileHandlers)
 				{
 					if (!string.IsNullOrEmpty(tile.data.CropConfigId))
 					{
 						TileConfig tileConfig = tileManager.GetTileConfig(tile.data.TileConfigId);
-						if (tileConfig.type == TileType.Growing)
+						if (tileConfig.type == TileType.Crop)
 						{
+							growthOrCropCount++;
+						}
+						else if (tileConfig.type == TileType.Growing)
+						{
+							growthOrCropCount++;
 							CropConfig cropConfig = gameConfig.crops.SingleOrDefault(c => c.id == tile.data.CropConfigId);
 							tile.data.ActionProgress += Time.deltaTime * cropConfig.growSpeed;
 							if (tile.data.ActionProgress >= 1f)
@@ -59,6 +65,10 @@ namespace AssemblyCSharp.Assets.Scripts
 							}
 						}
 					}
+				}
+				if (growthOrCropCount >= gameState.Stage.Tiles.Length - gameConfig.stages[0].baseWidth)
+				{
+					appStateManager.ChangeState(Data.AppState.GameToWin);
 				}
 			}
 		}
