@@ -16,8 +16,12 @@
 
 		Win,
 
+		WinToTitle,
+
 		GameToLose,
 
-		Lose
+		Lose,
+
+		LoseToTitle
 	}
 }

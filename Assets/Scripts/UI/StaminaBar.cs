@@ -1,45 +1,47 @@
 using AssemblyCSharp.Assets.Data;
-using AssemblyCSharp.Assets.Scripts;
 using AssemblyCSharp.AssetsData.Data.Config;
 using AssemblyCSharp.AssetsData.Data.State;
 using System;
 using UnityEngine;
 
-public class StaminaBar : MonoBehaviour
+namespace AssemblyCSharp.Assets.Scripts.UI
 {
-	private CharacterData _character;
-
-	private CharacterConfig _characterConfig;
-
-	[SerializeField]
-	private RectTransform _fill;
-
-	private AppStateManager appStateManager;
-
-	public void Initialize(
-		AppStateManager appStateManager,
-		CharacterConfig characterConfig,
-		CharacterData character)
+	public class StaminaBar : MonoBehaviour
 	{
-		this.appStateManager = appStateManager;
-		_character = character;
-		_characterConfig = characterConfig;
-	}
+		private CharacterData _character;
 
-	private void Update()
-	{
-		if (_character != null && appStateManager.CurrentState == AppState.Game)
+		private CharacterConfig _characterConfig;
+
+		[SerializeField]
+		private RectTransform _fill;
+
+		private AppStateManager appStateManager;
+
+		public void Initialize(
+			AppStateManager appStateManager,
+			CharacterConfig characterConfig,
+			CharacterData character)
 		{
-			// Update the UI bar
-			float newFillPercentage = _character.Stamina / 100f;
-			newFillPercentage = Mathf.Clamp01(newFillPercentage);
-			_fill.localScale = new Vector3(newFillPercentage, _fill.localScale.y, _fill.localScale.z);
+			this.appStateManager = appStateManager;
+			_character = character;
+			_characterConfig = characterConfig;
+		}
 
-			// Over time, Stamina naturally decreases
-			_character.Stamina -= Math.Max(0, _characterConfig.staminaDecreasePerFrame);
-			if (_character.Stamina <= 0)
+		private void Update()
+		{
+			if (_character != null && appStateManager.CurrentState == AppState.Game)
 			{
-				appStateManager.ChangeState(AppState.GameToLose);
+				// Update the UI bar
+				float newFillPercentage = _character.Stamina / 100f;
+				newFillPercentage = Mathf.Clamp01(newFillPercentage);
+				_fill.localScale = new Vector3(newFillPercentage, _fill.localScale.y, _fill.localScale.z);
+
+				// Over time, Stamina naturally decreases
+				_character.Stamina -= Math.Max(0, _characterConfig.staminaDecreasePerFrame);
+				if (_character.Stamina <= 0)
+				{
+					appStateManager.ChangeState(AppState.GameToLose);
+				}
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 ﻿using AssemblyCSharp.Assets.Data;
 using AssemblyCSharp.Assets.Scripts.Character;
+using AssemblyCSharp.Assets.Scripts.UI;
 using AssemblyCSharp.AssetsData.Data;
 using AssemblyCSharp.AssetsData.Data.Config;
 using AssemblyCSharp.AssetsData.Data.State;
@@ -13,6 +14,9 @@ namespace AssemblyCSharp.Assets.Scripts
 	public sealed class GameManager : MonoBehaviour
 	{
 		private AppStateManager appStateManager = new();
+
+		[SerializeField]
+		private AppStateTransitioner appStateTransitioner;
 
 		[SerializeField]
 		private CameraMovement cameraMovement;
@@ -35,10 +39,13 @@ namespace AssemblyCSharp.Assets.Scripts
 		private MoundManager moundManager;
 
 		[SerializeField]
-		private StaminaBar staminaBar;
+		private OverlayManager overlayManager;
 
 		[SerializeField]
-		private StartScreenController startScreen;
+		private ParallaxManager parallaxManager;
+
+		[SerializeField]
+		private StaminaBar staminaBar;
 
 		[SerializeField]
 		private TileManager tileManager;
@@ -46,13 +53,11 @@ namespace AssemblyCSharp.Assets.Scripts
 		[SerializeField]
 		private TimeManager timeManager;
 
-		[SerializeField]
-		private ParallaxManager parallaxManager;
-
 		public void Start()
 		{
+			appStateTransitioner.Initialize(appStateManager);
 			gameState = GenerateStage(gameConfig);
-			startScreen.Initialize(appStateManager);
+			overlayManager.Initialize(appStateManager);
 			staminaBar.Initialize(appStateManager, gameConfig.playerCharacter, gameState.Character);
 			inventoryUI.Initialize(gameState.Character, gameConfig);
 			moneyCounter.Initialize(gameConfig.playerCharacter, gameState.Character);
@@ -63,29 +68,21 @@ namespace AssemblyCSharp.Assets.Scripts
 			characterActions.Initialize(appStateManager, gameConfig, gameState, tileManager);
 			timeManager.Initialize(appStateManager, gameState);
 			moundManager.Initialize(appStateManager, gameConfig, gameState, tileManager);
-			parallaxManager.Initialize(appStateManager,cameraMovement.GetComponent<Camera>(), gameConfig.parallaxLayers);
+			parallaxManager.Initialize(appStateManager, cameraMovement.GetComponent<Camera>(), gameConfig.parallaxLayers);
 		}
 
 		private static GameState GenerateStage(GameConfig gameConfig)
 		{
 			Stage stage = StageGenerator.Generate(gameConfig);
-			CharacterData character = new()
-			{
-				X = GetPlayerStartX(gameConfig, stage),
-				// TODO: REMOVE - just for testing inventory
-				// For now, set inventory to a random collection
-				Inventory = new Dictionary<string, int>()
-				{
-					{ "tempRedBerry", 1 },
-					{ "tempBlueBerry", 1 },
-					{ "tempPinkBerry", 1 }
-				}
-			};
-
+			int startX = GetPlayerStartX(gameConfig, stage);
 			return new GameState()
 			{
 				Stage = stage,
-				Character = character
+				Character = new CharacterData()
+				{
+					TileX = startX,
+					X = startX
+				}
 			};
 		}
 

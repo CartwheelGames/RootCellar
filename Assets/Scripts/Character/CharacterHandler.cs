@@ -67,7 +67,7 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 				if (verticalInput < -float.Epsilon)
 				{
 					AssignCharacterX();
-					TileHandler tile = tileManager.TileHandlers[gameState.Character.X];
+					TileHandler tile = tileManager.TileHandlers[gameState.Character.TileX];
 					string tileConfigId = tile.data.TileConfigId;
 					TileConfig tileConfig = tileManager.GetTileConfig(tileConfigId);
 					if (tileConfig != null)
@@ -101,7 +101,8 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 			if (CharacterData != null)
 			{
 				int x = Mathf.RoundToInt(transform.position.x);
-				CharacterData.X = Mathf.Clamp(x, 0, tileManager.TileHandlers.Length + 1);
+				CharacterData.TileX = Mathf.Clamp(x, 0, tileManager.TileHandlers.Length + 1);
+				CharacterData.X = transform.position.x;
 			}
 		}
 

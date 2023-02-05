@@ -17,7 +17,9 @@ namespace AssemblyCSharp.AssetsData.Data.State
 		public bool IsFacingLeft { get; set; }
 
 		/// <remarks> The x index of the current tile the characterActions is at </remarks>
-		public int X { get; set; }
+		public int TileX { get; set; }
+
+		public float X { get; set; }
 
 		public void AddItem(string itemId)
 		{
