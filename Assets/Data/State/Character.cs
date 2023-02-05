@@ -6,7 +6,7 @@ namespace AssemblyCSharp.AssetsData.Data.State
 	{
 		public Dictionary<string, int> Inventory { get; set; } = new();
 
-		public int Stamina = 50; // out of 100
+		public float Stamina = 50f; // out of 100
 
 		public bool IsFacingLeft { get; set; }
 
