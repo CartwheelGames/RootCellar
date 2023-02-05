@@ -1,4 +1,5 @@
 ﻿using AssemblyCSharp.Assets.Data;
+using UnityEngine;
 
 namespace AssemblyCSharp.Assets.Scripts.UI
 {
@@ -10,6 +11,17 @@ namespace AssemblyCSharp.Assets.Scripts.UI
 			appStateManager.AddEnterListener(AppState.GameToWin, FadeIn);
 			appStateManager.AddEnterListener(AppState.WinToTitle, FadeOut);
 			appStateManager.AddEnterListener(AppState.Title, CleanUp);
+		}
+
+		private void Update()
+		{
+			if (appStateManager.CurrentState == AppState.Win)
+			{
+				if (Input.anyKeyDown)
+				{
+					appStateManager.ChangeState(AppState.WinToTitle);
+				}
+			}
 		}
 	}
 }
