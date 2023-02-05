@@ -76,7 +76,7 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 				}
 				else if (horizontalInput < -float.Epsilon)
 				{
-					transform.Translate(Vector2.left * Speed);
+					transform.Translate(Vector2.left * Speed * Time.deltaTime);
 					if (transform.position.x < 0)
 					{
 						transform.position = new Vector3(0, transform.position.y, transform.position.z);
@@ -87,7 +87,7 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 				}
 				else if (horizontalInput > float.Epsilon)
 				{
-					transform.Translate(Vector2.right * Speed);
+					transform.Translate(Vector2.right * Speed * Time.deltaTime);
 					if (transform.position.x > gameState.Stage.Tiles.Length - 1)
 					{
 						transform.position = new Vector3(gameState.Stage.Tiles.Length - 1, transform.position.y, transform.position.z);
