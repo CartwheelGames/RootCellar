@@ -41,7 +41,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			appStateManager.ChangeState(AppState.Title);
 			tileManager.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
 			cameraMovement.Initialize(gameState.Character, gameConfig.camera);
-			character.Initialize(gameConfig.playerCharacter, gameState.Character, tileManager);
+			character.Initialize(gameConfig, gameState.Character, tileManager);
 		}
 
 		private static GameState GenerateStage(GameConfig gameConfig)

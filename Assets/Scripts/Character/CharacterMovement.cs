@@ -1,6 +1,8 @@
 using AssemblyCSharp.AssetsData.Data;
 using AssemblyCSharp.AssetsData.Data.Config;
 using AssemblyCSharp.AssetsData.Data.State;
+using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace AssemblyCSharp.Assets.Scripts
@@ -9,19 +11,22 @@ namespace AssemblyCSharp.Assets.Scripts
 	{
 		private Character character;
 
-		private CharacterConfig characterConfig;
+		private GameConfig gameConfig;
 
 		private TileManager tileManager;
+		private CharacterConfig CharacterConfig => gameConfig?.playerCharacter;
 
-		private float Speed => characterConfig != null ? characterConfig.baseSpeed : 1f;
+		private float Speed => gameConfig?.playerCharacter != null
+			? gameConfig.playerCharacter.baseSpeed
+			: 1f;
 
 		public void Initialize(
-			CharacterConfig characterConfig,
+			GameConfig gameConfig,
 			Character character,
 			TileManager tileManager)
 		{
 			this.character = character;
-			this.characterConfig = characterConfig;
+			this.gameConfig = gameConfig;
 			this.tileManager = tileManager;
 		}
 
@@ -66,29 +71,77 @@ namespace AssemblyCSharp.Assets.Scripts
 			}
 		}
 
+		/// <remarks> Ignore for MVP </remarks>
 		private void ChopTree(TileHandler tile)
 		{
-			tile.data.ActionProgress += Time.deltaTime * characterConfig.chopTreeSpeed;
+			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.chopTreeSpeed;
 			if (tile.data.ActionProgress >= 1f)
 			{
 				tileManager.SetTileType(tile, TileType.Dirt);
 				tile.data.ActionProgress = 0f;
 			}
 		}
+
+		private void HarvestCrop(TileHandler tile)
+		{
+			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.digMoundSpeed;
+			if (tile.data.ActionProgress >= 1f)
+			{
+				tile.data.ActionProgress = 0f;
+				CropConfig cropConfig = gameConfig.crops.SingleOrDefault(c => c.id == tile.data.CropConfigId);
+				character.Inventory[cropConfig.id] += cropConfig.yield;
+				tile.data.CropConfigId = string.Empty;
+				tileManager.SetTileType(tile, TileType.Plot);
+			}
+		}
+
+
+		private void PlantSeed(TileHandler tile)
+		{
+			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.digMoundSpeed;
+			if (tile.data.ActionProgress >= 1f)
+			{
+				tileManager.SetTileType(tile, TileType.Crop);
+				tile.data.ActionProgress = 0f;
+				if (!string.IsNullOrEmpty(character.CurrentItemId)
+					&& character.Inventory.ContainsKey(character.CurrentItemId))
+				{
+					CropConfig cropConfig = gameConfig.crops.SingleOrDefault(c => c.id == character.CurrentItemId);
+					tile.data.CropConfigId = cropConfig.id;
+				}
+				tileManager.SetTileType(tile, TileType.Growing);
+				tile.data.CropConfigId = string.Empty;
+			}
+		}
+
 
 		private void DigMound(TileHandler tile)
 		{
-			tile.data.ActionProgress += Time.deltaTime * characterConfig.digMoundSpeed;
+			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.digMoundSpeed;
 			if (tile.data.ActionProgress >= 1f)
 			{
 				tileManager.SetTileType(tile, TileType.Dirt);
+				System.Random random = new();
+				int totalWeight = gameConfig.crops.Sum(x => x.weight);
+				int randomValue = random.Next(totalWeight);
+				for (int c = 0; c < gameConfig.crops.Count; c++)
+				{
+					CropConfig cropConfig = gameConfig.crops[c];
+					if (randomValue < cropConfig.weight)
+					{
+						character.Inventory[cropConfig.id]++;
+						break;
+					}
+					randomValue -= cropConfig.weight;
+				}
 				tile.data.ActionProgress = 0f;
 			}
 		}
 
+		/// <remarks> Ignore for MVP </remarks>
 		private void ForageBush(TileHandler tile)
 		{
-			tile.data.ActionProgress += Time.deltaTime * characterConfig.forageBushSpeed;
+			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.forageBushSpeed;
 			if (tile.data.ActionProgress >= 1f)
 			{
 				tileManager.SetTileType(tile, TileType.Dirt);
@@ -96,9 +149,10 @@ namespace AssemblyCSharp.Assets.Scripts
 			}
 		}
 
+		/// <remarks> Ignore for MVP </remarks>
 		private void HitRock(TileHandler tile)
 		{
-			tile.data.ActionProgress += Time.deltaTime * characterConfig.hitRockSpeed;
+			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.hitRockSpeed;
 			if (tile.data.ActionProgress >= 1f)
 			{
 				tileManager.SetTileType(tile, TileType.Dirt);
@@ -106,9 +160,10 @@ namespace AssemblyCSharp.Assets.Scripts
 			}
 		}
 
+		/// <remarks> Ignore for MVP </remarks>
 		private void PlowDirt(TileHandler tile)
 		{
-			tile.data.ActionProgress += Time.deltaTime * characterConfig.plowDirtSpeed;
+			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.plowDirtSpeed;
 			if (tile.data.ActionProgress >= 1f)
 			{
 				tileManager.SetTileType(tile, TileType.Plot);
@@ -125,9 +180,15 @@ namespace AssemblyCSharp.Assets.Scripts
 					break;
 
 				case TileType.Crop:
+					HarvestCrop(tile);
+					break;
+
 				case TileType.Growing:
-				case TileType.Plot:
 					WaterPlot(tile);
+					break;
+
+				case TileType.Plot:
+					PlantSeed(tile);
 					break;
 
 				case TileType.Bush:
@@ -147,15 +208,16 @@ namespace AssemblyCSharp.Assets.Scripts
 					break;
 
 				case TileType.Path:
-				default:
 				case TileType.None:
+				default:
 					break;
 			}
 		}
 
+		/// <remarks> Ignore for MVP </remarks>
 		private void WaterPlot(TileHandler tile)
 		{
-			tile.data.ActionProgress += Time.deltaTime * characterConfig.waterPlotSpeed;
+			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.waterPlotSpeed;
 			if (tile.data.ActionProgress >= 1f)
 			{
 				tile.data.Water = 1f;
