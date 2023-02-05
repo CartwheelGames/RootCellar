@@ -25,6 +25,9 @@ namespace AssemblyCSharp.Assets.Scripts
 		[SerializeField] 
 		public InventoryUI inventoryUI;
 
+		[SerializeField] 
+		public MoneyCounter moneyCounter;
+
 		private AppStateManager appStateManager = new();
 
 		[SerializeField]
@@ -42,6 +45,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			startScreen.Initialize(appStateManager);
 			staminaBar.Initialize(gameConfig.playerCharacter, gameState.Character);
 			inventoryUI.Initialize(gameConfig.playerCharacter, gameState.Character, this);
+			moneyCounter.Initialize(gameConfig.playerCharacter, gameState.Character);
 			
 			appStateManager.ChangeState(AppState.Title);
 			tileManager.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
@@ -99,7 +103,6 @@ namespace AssemblyCSharp.Assets.Scripts
 			{
 				days = 99,
 				id = cropId,
-				imagesByDay = null,
 				seedChance = 0,
 				seedImage = null,
 				color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f),

@@ -10,6 +10,8 @@ namespace AssemblyCSharp.AssetsData.Data.State
 
 		public float Stamina = 50f; // out of 100
 
+		public int Money = 0;
+
 		public bool IsFacingLeft { get; set; }
 
 		/// <remarks> The x index of the current tile the characterMovement is at </remarks>
