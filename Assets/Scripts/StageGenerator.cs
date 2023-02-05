@@ -11,7 +11,7 @@ namespace AssemblyCSharp.AssetsData.Logic
 	{
 		public static Stage Generate(GameConfig config, int stageIndex = 0)
 		{
-			// Populate tiles:
+			// Populate Tiles:
 			StageConfig stageConfig = config.stages[stageIndex];
 			int width = stageConfig.width;
 			int baseWidth = stageConfig.baseWidth;

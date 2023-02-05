@@ -34,7 +34,7 @@ namespace AssemblyCSharp.Assets.Scripts
 		private GameConfig gameConfig;
 
 		[SerializeField]
-		private LandscapeAssembler landscapeAssembler;
+		private TileManager tileManager;
 
 		public void Start()
 		{
@@ -44,9 +44,9 @@ namespace AssemblyCSharp.Assets.Scripts
 			inventoryUI.Initialize(gameConfig.playerCharacter, gameState.Character, this);
 			
 			appStateManager.ChangeState(AppState.Title);
-			character.Initialize(gameConfig.playerCharacter, gameState.Character);
-			landscapeAssembler.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
+			tileManager.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
 			cameraMovement.Initialize(gameState.Character, gameConfig.camera);
+			character.Initialize(gameConfig.playerCharacter, gameState.Character, tileManager);
 		}
 
 		private static GameState GenerateStage(GameConfig gameConfig)
