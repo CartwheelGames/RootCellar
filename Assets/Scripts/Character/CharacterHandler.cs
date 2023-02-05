@@ -20,7 +20,7 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 
 		private TileManager tileManager;
 
-		private CharacterConfig CharacterConfig => gameConfig?.playerCharacter;
+		private CharacterConfig CharacterConfig => gameConfig != null ? gameConfig.playerCharacter : null;
 
 		private float Speed => gameConfig != null && gameConfig.playerCharacter != null
 			? gameConfig.playerCharacter.baseSpeed
@@ -176,8 +176,8 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 					character.Inventory[cropConfig.id] += cropConfig.yield;
 					tile.data.CropConfigId = string.Empty;
 					tileManager.SetTileType(tile, TileType.Plot);
-					tile.topRenderer.sprite = null;
-					tile.frontRenderer.sprite = null;
+					tile.TopSprite = null;
+					tile.FrontSprite = null;
 					System.Random random = new();
 					if (random.Next(100) > cropConfig.seedChance)
 					{
@@ -239,7 +239,7 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 						tile.data.CropConfigId = cropConfig.id;
 						if (cropConfig.stepSprites.Count > 0)
 						{
-							tile.topRenderer.sprite = cropConfig.stepSprites[0];
+							tile.TopSprite = cropConfig.stepSprites[0];
 						}
 						Debug.Log("Seed planted");
 					}

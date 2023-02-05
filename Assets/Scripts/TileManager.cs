@@ -73,7 +73,7 @@ namespace AssemblyCSharp.Assets.Scripts
 						AssignRandomCropToTile(tileHandler);
 					}
 					tileHandler.data.TileConfigId = tileConfigId;
-					tileHandler.mainRenderer.sprite = tileSet.tiles.SingleOrDefault(t => t.id == tileConfigId)?.sprite;
+					tileHandler.MainSprite = tileSet.tiles.SingleOrDefault(t => t.id == tileConfigId)?.sprite;
 				}
 			}
 		}
@@ -96,7 +96,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			{
 				TileHandler tileHandler = Instantiate(tilePrefab, new Vector3(x, -1, tileZ), Quaternion.identity, transform);
 				string tileID = stage.Tiles[x].TileConfigId;
-				tileHandler.mainRenderer.sprite = tileSet.tiles.SingleOrDefault(t => t.id == tileID)?.sprite;
+				tileHandler.MainSprite = tileSet.tiles.SingleOrDefault(t => t.id == tileID)?.sprite;
 				tileHandler.data = stage.Tiles[x];
 				if (tileHandler.data.Structure != null)
 				{

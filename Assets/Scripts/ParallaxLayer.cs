@@ -1,46 +1,29 @@
-using System;
-using AssemblyCSharp.Assets.Data;
 using AssemblyCSharp.AssetsData.Data.Config;
-using AssemblyCSharp.AssetsData.Data.State;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-
 
 namespace AssemblyCSharp.Assets.Scripts
 {
-	public class ParallaxLayer: MonoBehaviour
+	public class ParallaxLayer : MonoBehaviour
 	{
 		public GameObject parallaxSpritePrefab;
 
-		private ParallaxConfig parallaxConfig;
-
 		private Camera localCamera;
 
-		private float zDepth;
-		
-		private float screenWidth;
+		private ParallaxConfig parallaxConfig;
 
-		private bool initialized;
+		private float screenWidth;
 
 		private GameObject[] sprites;
 
 		private TileConfig[] tileConfigArray;
 
-		private void Start()
-		{
-			this.initialized = false;
-		}
-
 		public void Initialize(ParallaxConfig parallaxConfig, Camera localCamera, float zDepth)
-		{			
+		{
 			this.parallaxConfig = parallaxConfig;
 			this.localCamera = localCamera;
-			this.zDepth = zDepth;
-
-
-			this.screenWidth = 2 * this.localCamera.orthographicSize * this.localCamera.aspect;
-;			
+			screenWidth = 2 * localCamera.orthographicSize * localCamera.aspect;
 			int numItems = parallaxConfig.numberOnscreen + 1;
 			sprites = new GameObject[numItems];
 			List<TileConfig> tileConfigs = parallaxConfig.tiles;
@@ -48,38 +31,34 @@ namespace AssemblyCSharp.Assets.Scripts
 			for (int i = 0; i < numItems; i++)
 			{
 				sprites[i] = Instantiate(
-					parallaxSpritePrefab, 
-					new Vector3(i * this.screenWidth / parallaxConfig.numberOnscreen, 
-					this.parallaxConfig.yOffset, zDepth), 
+					parallaxSpritePrefab,
+					new Vector3(i * screenWidth / parallaxConfig.numberOnscreen,
+					parallaxConfig.yOffset, zDepth),
 					Quaternion.identity, transform);
-				tileConfigArray[i] = tileConfigs[UnityEngine.Random.Range(0,tileConfigs.Count)];
+				System.Random random = new();
+				int randomIndex = random.Next(tileConfigs.Count);
+				tileConfigArray[i] = tileConfigs[randomIndex];
 				SpriteRenderer spriteRenderer = sprites[i].GetComponent<SpriteRenderer>();
 				spriteRenderer.sprite = tileConfigArray[i].sprite;
 				float width = spriteRenderer.bounds.size.x;
-     			// float height = spriteRenderer.bounds.size.y;
-				sprites[i].GetComponent<Transform>().localScale *= (this.screenWidth / this.parallaxConfig.numberOnscreen) / width;
+				sprites[i].transform.localScale *= screenWidth / parallaxConfig.numberOnscreen / width;
 			}
-			Debug.Log(this.screenWidth);
-
-			this.initialized = true;
 		}
 
 		private void Update()
 		{
-			float cameraPos = this.localCamera.GetComponent<Transform>().position.x;
-			float cameraOffset = cameraPos * this.parallaxConfig.parallaxAmount;
-			float segment = this.screenWidth / this.parallaxConfig.numberOnscreen;
-			// Debug.Log(this.screenWidth);
-			// if (this.parallaxConfig.parallaxAmount == 1) Debug.Log(cameraOffset % this.screenWidth);
-
+			float cameraPos = localCamera.transform.position.x;
+			float cameraOffset = cameraPos * parallaxConfig.parallaxAmount;
+			float segment = screenWidth / parallaxConfig.numberOnscreen;
 			for (int i = 0; i < sprites.Length; i++)
 			{
-				Vector3 position = sprites[i].GetComponent<Transform>().position;
-				float absoluteDivider = ((float)Math.Truncate((1 - this.parallaxConfig.parallaxAmount) * cameraPos / this.screenWidth) * this.screenWidth);
-
-				position.x = cameraOffset + absoluteDivider + segment * i - segment / 2 * (this.parallaxConfig.numberOnscreen - 1);
-				// position.x = cameraOffset + (cameraInverse % this.screenWidth); //* (this.screenWidth / parallaxConfig.numberOnscreen * this.parallaxConfig.parallaxAmount);
-				sprites[i].GetComponent<Transform>().position = position;
+				Vector3 position = sprites[i].transform.position;
+				float absoluteDivider = (float)Math.Truncate((1 - parallaxConfig.parallaxAmount) * cameraPos / this.screenWidth) * this.screenWidth;
+				position.x = cameraOffset
+					+ absoluteDivider
+					+ (segment * i)
+					- (segment / 2 * (parallaxConfig.numberOnscreen - 1));
+				sprites[i].transform.position = position;
 			}
 		}
 	}
