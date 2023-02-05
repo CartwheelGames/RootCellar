@@ -101,3 +101,11 @@ MonoBehaviour:
       sprite: {fileID: 21300000, guid: bef417bf26df4400bad840914b6ad8c6, type: 3}
       type: 0
       weight: 100
+  - parallaxAmount: -0.1
+    numberOnscreen: 1
+    yOffset: -0.8
+    tiles:
+    - id: 
+      sprite: {fileID: 21300000, guid: e930fbc428206448e9dc021a49abef10, type: 3}
+      type: 0
+      weight: 100
