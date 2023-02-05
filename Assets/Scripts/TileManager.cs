@@ -1,21 +1,22 @@
 using AssemblyCSharp.Assets.Data;
 using AssemblyCSharp.AssetsData.Data.Config;
 using AssemblyCSharp.AssetsData.Data.State;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace AssemblyCSharp.Assets.Scripts
 {
-	public class LandscapeAssembler : MonoBehaviour
+	public class TileManager : MonoBehaviour
 	{
-		public GameObject tilePrefab;
+		public TileRenderer tilePrefab;
 
 		private Stage stage;
 
-		private GameObject[] tiles;
-
 		private List<TileSetConfig> tileSets;
+
+		public TileRenderer[] Tiles { get; private set; } = Array.Empty<TileRenderer>();
 
 		public void Initialize(AppStateManager appStateManager, Stage stage, List<TileSetConfig> tileSets)
 		{
@@ -28,19 +29,22 @@ namespace AssemblyCSharp.Assets.Scripts
 
 		private void Cleanup()
 		{
-			// Clear Sub objects here
+			for (int i = 0; i < Tiles.Length; i++)
+			{
+				Destroy(Tiles[i].gameObject);
+			}
+			Tiles = Array.Empty<TileRenderer>();
 		}
 
 		private void Generate()
 		{
-			tiles = new GameObject[stage.Tiles.Length];
-            TileSetConfig tileSet = tileSets.SingleOrDefault(t=>t.id == stage.TileSetId);
+			Tiles = new TileRenderer[stage.Tiles.Length];
+			TileSetConfig tileSet = tileSets.SingleOrDefault(t => t.id == stage.TileSetId);
 			for (int x = 0; x < stage.Tiles.Length; x++)
-            {
-				tiles[x] = Instantiate(tilePrefab, new Vector3(x, -1, -1), Quaternion.identity, transform);
-                SpriteRenderer spriteRenderer = tiles[x].GetComponent<SpriteRenderer>();
-                string tileID = stage.Tiles[x].TileConfigId;
-                spriteRenderer.sprite = tileSet.tiles.SingleOrDefault(t=>t.id == tileID)?.sprite;                
+			{
+				Tiles[x] = Instantiate(tilePrefab, new Vector3(x, -1, -1), Quaternion.identity, transform);
+				string tileID = stage.Tiles[x].TileConfigId;
+				Tiles[x].mainRenderer.sprite = tileSet.tiles.SingleOrDefault(t => t.id == tileID)?.sprite;
 			}
 		}
 	}

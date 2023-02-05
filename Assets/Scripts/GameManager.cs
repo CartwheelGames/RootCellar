@@ -31,7 +31,7 @@ namespace AssemblyCSharp.Assets.Scripts
 		private GameConfig gameConfig;
 
 		[SerializeField]
-		private LandscapeAssembler landscapeAssembler;
+		private TileManager landscapeAssembler;
 
 		public void Start()
 		{
