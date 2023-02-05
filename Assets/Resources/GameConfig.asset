@@ -52,7 +52,7 @@ MonoBehaviour:
     weight: 4
     yield: 1
   playerCharacter:
-    baseSpeed: 0.05
+    baseSpeed: 5
     chopTreeSpeed: 1
     digMoundSpeed: 1
     forageBushSpeed: 1
