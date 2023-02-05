@@ -7,6 +7,8 @@ namespace AssemblyCSharp.AssetsData.Data.Config
 	[Serializable]
 	public sealed class CropConfig
 	{
+		public Color color;
+
 		public int days;
 
 		public string id;

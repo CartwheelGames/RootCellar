@@ -108,6 +108,11 @@ namespace AssemblyCSharp.Assets.Scripts
 				{
 					CropConfig cropConfig = gameConfig.crops.SingleOrDefault(c => c.id == character.CurrentItemId);
 					tile.data.CropConfigId = cropConfig.id;
+					System.Random random = new();
+					if(random.Next(100) > cropConfig.seedChance)
+					{
+						character.Inventory[cropConfig.id]++;
+					}
 				}
 				tileManager.SetTileType(tile, TileType.Growing);
 				tile.data.CropConfigId = string.Empty;

@@ -12,7 +12,7 @@ namespace AssemblyCSharp.Assets.Scripts
 	public sealed class GameManager : MonoBehaviour
 	{
 		[SerializeField]
-		public CharacterMovement character;
+		public CharacterMovement character; // TODO: rename to characterMovement
 
 		public GameState gameState;
 
@@ -21,6 +21,9 @@ namespace AssemblyCSharp.Assets.Scripts
 
 		[SerializeField]
 		public StaminaBar staminaBar;
+
+		[SerializeField] 
+		public InventoryUI inventoryUI;
 
 		private AppStateManager appStateManager = new();
 
@@ -38,6 +41,8 @@ namespace AssemblyCSharp.Assets.Scripts
 			gameState = GenerateStage(gameConfig);
 			startScreen.Initialize(appStateManager);
 			staminaBar.Initialize(gameConfig.playerCharacter, gameState.Character);
+			inventoryUI.Initialize(gameConfig.playerCharacter, gameState.Character, this);
+			
 			appStateManager.ChangeState(AppState.Title);
 			tileManager.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
 			cameraMovement.Initialize(gameState.Character, gameConfig.camera);
@@ -51,6 +56,16 @@ namespace AssemblyCSharp.Assets.Scripts
 			{
 				X = GetPlayerStartX(gameConfig, stage)
 			};
+			
+			// TODO: REMOVE - just for testing inventory
+			// For now, set inventory to a random collection
+			player.Inventory = new Dictionary<string, int>()
+			{
+				{ "tempRedBerry", 1 },
+				{ "tempBlueBerry", 1 },
+				{ "tempPinkBerry", 1 }
+			};
+				
 			return new GameState()
 			{
 				Stage = stage,
@@ -74,6 +89,23 @@ namespace AssemblyCSharp.Assets.Scripts
 				}
 			}
 			return 0;
+		}
+
+		public CropConfig GetCropConfigFromCropId(string cropId)
+		{
+			// TODO: Michael fill out - for any given crop Id (the id stored in Inventory dictionary),
+			// return the relevant CropConfig object
+
+			return new CropConfig
+			{
+				days = 99,
+				id = cropId,
+				imagesByDay = null,
+				seedChance = 0,
+				seedImage = null,
+				color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f),
+				yield = 0
+			};
 		}
 	}
 }
