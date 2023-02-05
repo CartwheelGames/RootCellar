@@ -20,6 +20,14 @@ MonoBehaviour:
   crops: []
   playerCharacter:
     baseSpeed: 0.01
+    chopTreeSpeed: 1
+    digMoundSpeed: 1
+    forageBushSpeed: 1
+    hitRockSpeed: 1
+    plowDirtSpeed: 1
+    waterPlotSpeed: 1
+    staminaGrowth: 2
+    staminaDecreasePerFrame: 0.01
   stages:
   - baseWidth: 10
     structures: []
@@ -32,6 +40,10 @@ MonoBehaviour:
     - id: dirt
       sprite: {fileID: 21300000, guid: 42e67d6e0a93f4a7182f75e02c9f401c, type: 3}
       type: 1
+      weight: 1
+    - id: harvest
+      sprite: {fileID: 21300000, guid: ba9ded058b398405da92eb7c6c6e57ec, type: 3}
+      type: 4
       weight: 1
     - id: path
       sprite: {fileID: 21300000, guid: ba9ded058b398405da92eb7c6c6e57ec, type: 3}
