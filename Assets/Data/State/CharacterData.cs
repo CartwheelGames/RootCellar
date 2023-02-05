@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace AssemblyCSharp.AssetsData.Data.State
 {
-	public class Character
+	public sealed class CharacterData
 	{
 		public int Money = 0;
 
@@ -16,7 +16,7 @@ namespace AssemblyCSharp.AssetsData.Data.State
 		// out of 100
 		public bool IsFacingLeft { get; set; }
 
-		/// <remarks> The x index of the current tile the characterMovement is at </remarks>
+		/// <remarks> The x index of the current tile the characterActions is at </remarks>
 		public int X { get; set; }
 
 		public void AddItem(string itemId)

@@ -53,7 +53,7 @@ namespace AssemblyCSharp.Assets.Scripts
 
 		private void Update()
 		{
-			if (appStateManager != null && appStateManager.CurrentAppState == Data.AppState.Game)
+			if (appStateManager != null && appStateManager.CurrentState == Data.AppState.Game)
 			{
 				if (stageConfig == null || Stage.stageConfigId != stageConfig.id)
 				{

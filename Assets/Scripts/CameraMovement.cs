@@ -10,11 +10,11 @@ namespace AssemblyCSharp.Assets.Scripts
 
 		private CameraConfig cameraConfig;
 
-		private Character character;
+		private CharacterData character;
 
 		private void Awake() => localCamera = GetComponent<Camera>();
 
-		public void Initialize(Character character, CameraConfig cameraConfig)
+		public void Initialize(CharacterData character, CameraConfig cameraConfig)
 		{
 			this.character = character;
 			this.cameraConfig = cameraConfig;

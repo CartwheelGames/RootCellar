@@ -54,7 +54,7 @@ namespace AssemblyCSharp.AssetsData.Logic
 
 		private void Update()
 		{
-			if (appStateManager.CurrentAppState == AppState.Title)
+			if (appStateManager.CurrentState == AppState.Title)
 			{
 				if (Input.anyKeyDown)
 				{

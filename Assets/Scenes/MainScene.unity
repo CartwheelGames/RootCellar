@@ -340,6 +340,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 374066573491607448, guid: c28f81d74c63f4ee59e55c85036e88ee, type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 984249519}
     - target: {fileID: 374066573491607449, guid: c28f81d74c63f4ee59e55c85036e88ee, type: 3}
       propertyPath: m_Name
       value: Character
@@ -400,7 +404,8 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 12878877041822817, guid: c28f81d74c63f4ee59e55c85036e88ee, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c28f81d74c63f4ee59e55c85036e88ee, type: 3}
 --- !u!1 &259069084
 GameObject:
@@ -946,6 +951,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86ac136520074465bb8c54ab73c7ed19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &984249519 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4043410433417151824, guid: c28f81d74c63f4ee59e55c85036e88ee, type: 3}
+  m_PrefabInstance: {fileID: 252716662}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1038010377
 GameObject:
   m_ObjectHideFlags: 0
@@ -978,7 +988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraMovement: {fileID: 519420033}
-  characterMovement: {fileID: 766832107}
+  characterActions: {fileID: 766832107}
   gameConfig: {fileID: 11400000, guid: 658c542a557242c4296a75741a95f595, type: 2}
   inventoryUI: {fileID: 766832111}
   moneyCounter: {fileID: 1723363935}

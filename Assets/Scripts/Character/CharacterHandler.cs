@@ -1,14 +1,20 @@
+using AssemblyCSharp.Assets.Data;
 using AssemblyCSharp.AssetsData.Data;
 using AssemblyCSharp.AssetsData.Data.Config;
 using AssemblyCSharp.AssetsData.Data.State;
 using System.Linq;
 using UnityEngine;
 
-namespace AssemblyCSharp.Assets.Scripts
+namespace AssemblyCSharp.Assets.Scripts.Character
 {
-	public sealed class CharacterMovement : MonoBehaviour
+	public sealed class CharacterHandler : MonoBehaviour
 	{
-		private Character character;
+		[SerializeField]
+		private Animator animator;
+
+		private CharacterData character;
+
+		private CharacterStateManager characterStateManager = new();
 
 		private GameConfig gameConfig;
 
@@ -22,13 +28,23 @@ namespace AssemblyCSharp.Assets.Scripts
 
 		public void Initialize(
 			GameConfig gameConfig,
-			Character character,
+			CharacterData character,
 			TileManager tileManager)
 		{
 			this.character = character;
 			this.gameConfig = gameConfig;
 			this.tileManager = tileManager;
 			transform.position = new Vector3(character.X, transform.position.y, transform.position.z);
+			characterStateManager.AddEnterListener(CharacterState.Idle, () => PlayAnimation("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Plow, () => PlayAnimation("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Chop, () => PlayAnimation("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Dig, () => PlayAnimation("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Forage, () => PlayAnimation("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Harvest, () => PlayAnimation("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Hit, () => PlayAnimation("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Plant, () => PlayAnimation("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Water, () => PlayAnimation("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Walk, () => PlayAnimation(character.IsFacingLeft ? "WalkLeft" : "WalkRight"));
 		}
 
 		public void Update()
@@ -37,19 +53,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			{
 				float horizontalInput = Input.GetAxis("Horizontal");
 				float verticalInput = Input.GetAxis("Vertical");
-				if (horizontalInput < -float.Epsilon)
-				{
-					AssignCharacterX();
-					transform.Translate(Vector2.left * Speed);
-					character.IsFacingLeft = true;
-				}
-				else if (horizontalInput > float.Epsilon)
-				{
-					AssignCharacterX();
-					transform.Translate(Vector2.right * Speed);
-					character.IsFacingLeft = false;
-				}
-				else if (verticalInput < -float.Epsilon)
+				if (verticalInput < -float.Epsilon)
 				{
 					AssignCharacterX();
 					TileHandler tile = tileManager.TileHandlers[character.X];
@@ -59,6 +63,24 @@ namespace AssemblyCSharp.Assets.Scripts
 					{
 						ProcessTileAction(tile, tileConfig.type);
 					}
+				}
+				else if (horizontalInput < -float.Epsilon)
+				{
+					AssignCharacterX();
+					transform.Translate(Vector2.left * Speed);
+					character.IsFacingLeft = true;
+					characterStateManager.ChangeState(CharacterState.Walk);
+				}
+				else if (horizontalInput > float.Epsilon)
+				{
+					AssignCharacterX();
+					transform.Translate(Vector2.right * Speed);
+					character.IsFacingLeft = false;
+					characterStateManager.ChangeState(CharacterState.Walk);
+				}
+				else
+				{
+					characterStateManager.ChangeState(CharacterState.Idle);
 				}
 			}
 		}
@@ -84,7 +106,12 @@ namespace AssemblyCSharp.Assets.Scripts
 			{
 				tileManager.SetTileType(tile, TileType.Dirt);
 				tile.data.ActionProgress = 0f;
+				EnterIdleState();
 				Debug.Log("Tree chopped into dirt");
+			}
+			else
+			{
+				EnterState(CharacterState.Chop);
 			}
 		}
 
@@ -100,9 +127,18 @@ namespace AssemblyCSharp.Assets.Scripts
 				tileManager.SetTileType(tileHandler, TileType.Dirt);
 				character.AddItem(tileHandler.data.CropConfigId);
 				tileHandler.data.ActionProgress = 0f;
+				EnterIdleState();
 				Debug.Log("Mound dug into dirt");
 			}
+			else
+			{
+				EnterState(CharacterState.Dig);
+			}
 		}
+
+		private void EnterIdleState() => EnterState(CharacterState.Idle);
+
+		private void EnterState(CharacterState characterState) => characterStateManager.ChangeState(characterState);
 
 		/// <remarks> Ignore for MVP </remarks>
 		private void ForageBush(TileHandler tile)
@@ -116,7 +152,12 @@ namespace AssemblyCSharp.Assets.Scripts
 			{
 				tileManager.SetTileType(tile, TileType.Dirt);
 				tile.data.ActionProgress = 0f;
+				EnterIdleState();
 				Debug.Log("Bush foraged into Dirt");
+			}
+			else
+			{
+				EnterState(CharacterState.Forage);
 			}
 		}
 
@@ -149,6 +190,11 @@ namespace AssemblyCSharp.Assets.Scripts
 					Debug.LogWarning($"No crop was found with the ID: {tile.data.CropConfigId}");
 				}
 				tile.data.ActionProgress = 0f;
+				EnterIdleState();
+			}
+			else
+			{
+				EnterState(CharacterState.Harvest);
 			}
 		}
 
@@ -164,7 +210,12 @@ namespace AssemblyCSharp.Assets.Scripts
 			{
 				tileManager.SetTileType(tile, TileType.Dirt);
 				tile.data.ActionProgress = 0f;
+				EnterIdleState();
 				Debug.Log("Hit rock into dirt");
+			}
+			else
+			{
+				EnterState(CharacterState.Hit);
 			}
 		}
 
@@ -193,6 +244,11 @@ namespace AssemblyCSharp.Assets.Scripts
 						Debug.Log("Seed planted");
 					}
 					tile.data.ActionProgress = 0f;
+					EnterIdleState();
+				}
+				else
+				{
+					EnterState(CharacterState.Plant);
 				}
 			}
 			else
@@ -200,6 +256,8 @@ namespace AssemblyCSharp.Assets.Scripts
 				Debug.Log("Not carrying any seeds to plant");
 			}
 		}
+
+		private void PlayAnimation(string animationId) => animator.Play(animationId);
 
 		/// <remarks> Ignore for MVP </remarks>
 		private void PlowDirt(TileHandler tile)
@@ -213,7 +271,12 @@ namespace AssemblyCSharp.Assets.Scripts
 			{
 				tileManager.SetTileType(tile, TileType.Plot);
 				tile.data.ActionProgress = 0f;
+				EnterIdleState();
 				Debug.Log("Dirt Plowed into a Plot");
+			}
+			else
+			{
+				EnterState(CharacterState.Plow);
 			}
 		}
 
@@ -256,6 +319,7 @@ namespace AssemblyCSharp.Assets.Scripts
 				case TileType.Path:
 				case TileType.None:
 				default:
+					EnterIdleState();
 					break;
 			}
 		}
@@ -272,7 +336,12 @@ namespace AssemblyCSharp.Assets.Scripts
 			{
 				tile.data.Water = 1f;
 				tile.data.ActionProgress = 0f;
+				EnterIdleState();
 				Debug.Log("Plot watered");
+			}
+			else
+			{
+				EnterState(CharacterState.Water);
 			}
 		}
 	}

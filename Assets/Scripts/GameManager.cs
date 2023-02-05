@@ -1,4 +1,5 @@
 ﻿using AssemblyCSharp.Assets.Data;
+using AssemblyCSharp.Assets.Scripts.Character;
 using AssemblyCSharp.AssetsData.Data;
 using AssemblyCSharp.AssetsData.Data.Config;
 using AssemblyCSharp.AssetsData.Data.State;
@@ -17,7 +18,7 @@ namespace AssemblyCSharp.Assets.Scripts
 		private CameraMovement cameraMovement;
 
 		[SerializeField]
-		private CharacterMovement characterMovement;
+		private CharacterHandler characterActions;
 
 		[SerializeField]
 		private GameConfig gameConfig;
@@ -56,7 +57,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			appStateManager.ChangeState(AppState.Title);
 			tileManager.Initialize(appStateManager, gameState.Stage, gameConfig);
 			cameraMovement.Initialize(gameState.Character, gameConfig.camera);
-			characterMovement.Initialize(gameConfig, gameState.Character, tileManager);
+			characterActions.Initialize(gameConfig, gameState.Character, tileManager);
 			timeManager.Initialize(appStateManager, gameState);
 			moundManager.Initialize(appStateManager, gameConfig, gameState, tileManager);
 		}
@@ -64,7 +65,7 @@ namespace AssemblyCSharp.Assets.Scripts
 		private static GameState GenerateStage(GameConfig gameConfig)
 		{
 			Stage stage = StageGenerator.Generate(gameConfig);
-			Character player = new()
+			CharacterData character = new()
 			{
 				X = GetPlayerStartX(gameConfig, stage),
 				// TODO: REMOVE - just for testing inventory
@@ -80,7 +81,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			return new GameState()
 			{
 				Stage = stage,
-				Character = player
+				Character = character
 			};
 		}
 

@@ -3,11 +3,11 @@ using AssemblyCSharp.AssetsData.Data.State;
 using System.Linq;
 using UnityEngine;
 
-namespace AssemblyCSharp.Assets.Scripts
+namespace AssemblyCSharp.Assets.Scripts.Character
 {
 	public sealed class InventoryUI : MonoBehaviour
 	{
-		private Character _character;
+		private CharacterData _character;
 
 		private int _currentInventoryLength = 0;
 
@@ -23,7 +23,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			gameConfig.crops.SingleOrDefault(c => c.id == cropId);
 
 		// tODO: call
-		public void Initialize(Character character, GameConfig gameConfig)
+		public void Initialize(CharacterData character, GameConfig gameConfig)
 		{
 			_character = character;
 			this.gameConfig = gameConfig;

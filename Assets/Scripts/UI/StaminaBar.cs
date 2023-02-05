@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class StaminaBar : MonoBehaviour
 {
-	private Character _character;
+	private CharacterData _character;
 
 	private CharacterConfig _characterConfig;
 
@@ -19,7 +19,7 @@ public class StaminaBar : MonoBehaviour
 	public void Initialize(
 		AppStateManager appStateManager,
 		CharacterConfig characterConfig,
-		Character character)
+		CharacterData character)
 	{
 		this.appStateManager = appStateManager;
 		_character = character;
@@ -28,11 +28,11 @@ public class StaminaBar : MonoBehaviour
 
 	private void Update()
 	{
-		if (_character != null)
+		if (_character != null && appStateManager.CurrentState == AppState.Game)
 		{
 			// Update the UI bar
 			float newFillPercentage = _character.Stamina / 100f;
-			newFillPercentage = Math.Clamp(newFillPercentage, 0, 1);
+			newFillPercentage = Mathf.Clamp01(newFillPercentage);
 			_fill.localScale = new Vector3(newFillPercentage, _fill.localScale.y, _fill.localScale.z);
 
 			// Over time, Stamina naturally decreases

@@ -6,13 +6,13 @@ using UnityEngine.UI;
 
 public class MoneyCounter : MonoBehaviour
 {
-    private Character _character;
+    private CharacterData _character;
     private CharacterConfig _characterConfig;
     private int _currentMoneyCount = 0;
     [SerializeField] private Text _txt;
     [SerializeField] private TextFlyUpController _textFlyUpController;
     
-    public void Initialize(CharacterConfig characterConfig, Character character)
+    public void Initialize(CharacterConfig characterConfig, CharacterData character)
     {
         _character = character;
         _characterConfig = characterConfig;
