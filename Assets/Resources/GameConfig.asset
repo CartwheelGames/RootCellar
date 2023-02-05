@@ -58,7 +58,7 @@ MonoBehaviour:
     forageBushSpeed: 1
     hitRockSpeed: 1
     plowDirtSpeed: 1
-    staminaGrowth: 2
+    staminaGrowth: 10
     staminaDecreaseSpeed: 0.1
   stages:
   - baseWidth: 10

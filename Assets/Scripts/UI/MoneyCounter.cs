@@ -37,7 +37,7 @@ namespace AssemblyCSharp.Assets.Scripts.UI
 
 		private void UpdateMoneyCounter(int newMoneyAmount, int moneyAmountDifference)
 		{
-			_txt.text = "$" + newMoneyAmount;
+			_txt.text = $"${newMoneyAmount}";
 			_textFlyUpController.SetTextAndFlyUp((moneyAmountDifference > 0 ? "+" : "-") + "$" + moneyAmountDifference);
 		}
 	}
