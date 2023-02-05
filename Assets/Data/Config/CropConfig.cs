@@ -18,6 +18,8 @@ namespace AssemblyCSharp.AssetsData.Data.Config
 
 		public Texture2D seedImage;
 
+		public Color color;
+
 		public int Yield { get; set; }
 	}
 }
