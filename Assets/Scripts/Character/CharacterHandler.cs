@@ -193,7 +193,6 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 					tile.data.CropConfigId = string.Empty;
 					tileManager.SetTileType(tile, TileType.Plot);
 					tile.TopSprite = null;
-					tile.FrontSprite = null;
 					System.Random random = new();
 					if (random.Next(100) > cropConfig.seedChance)
 					{
@@ -241,23 +240,30 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 			{
 				if (tile.data.ActionProgress == 0)
 				{
-					Debug.Log("Planging seed");
+					Debug.Log("Planting seed");
 				}
 				tile.data.ActionProgress += Time.deltaTime * CharacterConfig.digMoundSpeed;
-				if (tile.data.ActionProgress >= 1f)
+				if (tile.data.ActionProgress >= 1f && !string.IsNullOrEmpty(CharacterData.CurrentItemId))
 				{
 					tileManager.SetTileType(tile, TileType.Growing);
 					int count = CharacterData.GetCountOfItem(CharacterData.CurrentItemId);
 					if (count > 0)
 					{
-						CharacterData.RemoveItem(CharacterData.CurrentItemId);
 						CropConfig cropConfig = gameConfig.crops.SingleOrDefault(c => c.id == CharacterData.CurrentItemId);
-						tile.data.CropConfigId = cropConfig.id;
-						if (cropConfig.stepSprites.Count > 0)
+						CharacterData.RemoveItem(CharacterData.CurrentItemId);
+						if (cropConfig != null)
 						{
-							tile.TopSprite = cropConfig.stepSprites[0];
+							tile.data.CropConfigId = cropConfig.id;
+							if (cropConfig.stepSprites.Count > 0)
+							{
+								tile.TopSprite = cropConfig.stepSprites[0];
+							}
+							if (cropConfig.rootImage != null)
+							{
+								tile.MainSprite = cropConfig.rootImage;
+							}
+							Debug.Log("Seed planted");
 						}
-						Debug.Log("Seed planted");
 					}
 					tile.data.ActionProgress = 0f;
 					EnterIdleState();

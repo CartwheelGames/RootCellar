@@ -73,7 +73,8 @@ namespace AssemblyCSharp.Assets.Scripts
 						AssignRandomCropToTile(tileHandler);
 					}
 					tileHandler.data.TileConfigId = tileConfigId;
-					tileHandler.MainSprite = tileSet.tiles.SingleOrDefault(t => t.id == tileConfigId)?.sprite;
+					TileConfig tileConfig = tileSet.tiles.SingleOrDefault(t => t.id == tileConfigId);
+					tileHandler.MainSprite = tileConfig != null ? tileConfig.sprite : null;
 				}
 			}
 		}

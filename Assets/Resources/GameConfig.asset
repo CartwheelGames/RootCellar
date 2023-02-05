@@ -18,31 +18,36 @@ MonoBehaviour:
     xOffset: 2
     yOffset: 2
   crops:
-  - color: {r: 0.9245283, g: 0, b: 0, a: 0}
-    stepTime: 10
+  - color: {r: 0.08627451, g: 0.6313726, b: 0.6901961, a: 1}
     id: blue
+    rootImage: {fileID: 21300000, guid: 6e51b638c015e4914bcb4336562990a4, type: 3}
+    seedChance: 50
+    seedImage: {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
     stepSprites:
     - {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
-    seedChance: 50
-    seedImage: {fileID: 0}
+    - {fileID: 21300000, guid: 9b780633e713440f3ba089cb3f0f7bdd, type: 3}
+    stepTime: 10
     weight: 1
     yield: 1
-  - color: {r: 0.9245283, g: 0, b: 0, a: 0}
-    stepTime: 10
+  - color: {r: 0.7803922, g: 0.454902, b: 0.5647059, a: 1}
     id: orange
+    rootImage: {fileID: 21300000, guid: d400952d1e79343ddaaea2c5e4c611af, type: 3}
+    seedChance: 50
+    seedImage: {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
     stepSprites:
     - {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
-    seedChance: 50
-    seedImage: {fileID: 0}
+    - {fileID: 21300000, guid: 1dd92d8d0417f478698e7c25d55fe86a, type: 3}
+    stepTime: 10
     weight: 1
     yield: 1
-  - color: {r: 0.9245283, g: 0, b: 0, a: 0}
-    stepTime: 10
+  - color: {r: 0.77647066, g: 0.2392157, b: 0.454902, a: 1}
     id: red
+    rootImage: {fileID: 21300000, guid: b6edc43423ee848e6b26a2429624346d, type: 3}
+    seedChance: 50
+    seedImage: {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
     stepSprites:
     - {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
-    seedChance: 50
-    seedImage: {fileID: 0}
+    stepTime: 10
     weight: 1
     yield: 1
   playerCharacter:
@@ -54,11 +59,11 @@ MonoBehaviour:
     plowDirtSpeed: 1
     waterPlotSpeed: 1
     staminaGrowth: 2
-    staminaDecreasePerFrame: 0.01
+    staminaDecreasePerFrame: 0.001
   stages:
   - baseWidth: 10
     id: 
-    moundPlaceInterval: 0
+    moundPlaceInterval: 10
     structures:
     - structureId: tree
       x: 0
@@ -81,28 +86,28 @@ MonoBehaviour:
     - id: plot
       sprite: {fileID: 21300000, guid: 8a4a4572633c44179a5ea5603f630313, type: 3}
       type: 2
-      weight: 1
+      weight: 0
     - id: path
       sprite: {fileID: 21300000, guid: 59e5ffe76ed1c4e53b4ba07671dc5a17, type: 3}
       type: 3
-      weight: 1
-    - id: path
+      weight: 0
+    - id: path1
       sprite: {fileID: 21300000, guid: 6e51b638c015e4914bcb4336562990a4, type: 3}
       type: 4
-      weight: 1
-    - id: path
+      weight: 0
+    - id: crop1
       sprite: {fileID: 21300000, guid: d400952d1e79343ddaaea2c5e4c611af, type: 3}
       type: 4
       weight: 0
-    - id: path
+    - id: crop2
       sprite: {fileID: 21300000, guid: b6edc43423ee848e6b26a2429624346d, type: 3}
       type: 4
       weight: 0
-    - id: path
+    - id: sprout1
       sprite: {fileID: 21300000, guid: 72a3d935b5c414f17a8a8740d1dea984, type: 3}
       type: 5
       weight: 1
-    - id: path
+    - id: crop3
       sprite: {fileID: 21300000, guid: 7a0766861994d4a65b8e518a4e9fbd2e, type: 3}
       type: 9
       weight: 0

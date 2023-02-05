@@ -7,63 +7,48 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 {
 	public sealed class InventoryUI : MonoBehaviour
 	{
-		private CharacterData _character;
-
-		private int _currentInventoryLength = 0;
+		private CharacterData character;
 
 		[SerializeField]
-		private RectTransform _inventoryItemParent;
-
-		[SerializeField]
-		private SpriteRenderer _inventoryItemPrefab;
+		private SpriteRenderer inventoryDisplay;
 
 		private GameConfig gameConfig;
 
 		public CropConfig GetCropConfigFromCropId(string cropId) =>
 			gameConfig.crops.SingleOrDefault(c => c.id == cropId);
 
-		// tODO: call
 		public void Initialize(CharacterData character, GameConfig gameConfig)
 		{
-			_character = character;
+			this.character = character;
 			this.gameConfig = gameConfig;
 		}
 
+		private CropConfig currentCropConfig;
+
 		public void Update()
 		{
-			if (_character != null && _currentInventoryLength != _character.Inventory.Count)
+			if (character != null && !string.IsNullOrEmpty(character.CurrentItemId))
 			{
-				ClearInventoryUI();
-				CreateNewInventoryUI();
-
-				_currentInventoryLength = _character.Inventory.Count;
-			}
-		}
-
-		private void ClearInventoryUI()
-		{
-			foreach (Transform child in _inventoryItemParent.transform)
-			{
-				Destroy(child.gameObject);
-			}
-		}
-
-		private void CreateNewInventoryUI()
-		{
-			foreach (string inventoryItemId in _character.Inventory.Keys)
-			{
-				CropConfig cropConfig = GetCropConfigFromCropId(inventoryItemId);
-
-				// if for some reason, the crop stageConfigId doesn't correspond to a Crop Config,
-				// don't display the inventory UI for that object
-				if (cropConfig != null)
+				if (currentCropConfig == null || currentCropConfig.id != character.CurrentItemId)
 				{
-					// Create a new inventory item
-					SpriteRenderer newInventoryItem = Instantiate(_inventoryItemPrefab, _inventoryItemParent);
-
-					// Customize the color
-					newInventoryItem.color = cropConfig.color;
+					currentCropConfig = gameConfig.crops.SingleOrDefault(c => c.id == character.CurrentItemId);
+					if (currentCropConfig != null)
+					{
+						inventoryDisplay.sprite = currentCropConfig.seedImage;
+						inventoryDisplay.enabled = true;
+						inventoryDisplay.color = currentCropConfig.color;
+					}
+					else
+					{
+						inventoryDisplay.sprite = null;
+						inventoryDisplay.enabled = false;
+					}
 				}
+			}
+			else if (inventoryDisplay.enabled)
+			{
+				inventoryDisplay.sprite = null;
+				inventoryDisplay.enabled = false;
 			}
 		}
 	}

@@ -8,22 +8,10 @@ namespace AssemblyCSharp.Assets.Scripts
 		public Tile data;
 
 		[SerializeField]
-		private SpriteRenderer frontRenderer;
-
-		[SerializeField]
 		private SpriteRenderer mainRenderer;
 
 		[SerializeField]
 		private SpriteRenderer topRenderer;
-
-		public Sprite FrontSprite
-		{
-			set
-			{
-				frontRenderer.sprite = value;
-				frontRenderer.enabled = value != null;
-			}
-		}
 
 		public Sprite MainSprite
 		{
@@ -45,8 +33,8 @@ namespace AssemblyCSharp.Assets.Scripts
 
 		public void Awake()
 		{
-			frontRenderer.enabled = mainRenderer.enabled = topRenderer.enabled = false;
-			frontRenderer.sprite = mainRenderer.sprite = topRenderer.sprite = null;
+			mainRenderer.enabled = topRenderer.enabled = false;
+			mainRenderer.sprite = topRenderer.sprite = null;
 		}
 	}
 }
