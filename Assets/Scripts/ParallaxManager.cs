@@ -40,7 +40,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			layers = new GameObject[parallaxConfigs.Length];
 			for (int z = 0; z < parallaxConfigs.Length; z++)
 			{
-				float zDepth = (z + 1) * 10;
+				float zDepth = parallaxConfigs[z].parallaxAmount >= 0 ? (z + 1) * 10 : (z + 1) * -10;
 				layers[z] = Instantiate(parallaxLayerPrefab, new Vector3(0, 0, zDepth), Quaternion.identity, transform);
 
 				layers[z].GetComponent<ParallaxLayer>().Initialize(parallaxConfigs[z], this.localCamera, zDepth);

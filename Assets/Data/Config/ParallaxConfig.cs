@@ -7,7 +7,7 @@ namespace AssemblyCSharp.AssetsData.Data.Config
 	[Serializable]
 	public sealed class ParallaxConfig
 	{
-		[Range(0, 1)]
+		[Range(-1, 1)]
 		public float parallaxAmount;
 
 		[Range(1, 20)]
