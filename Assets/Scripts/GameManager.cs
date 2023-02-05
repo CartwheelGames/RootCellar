@@ -33,6 +33,9 @@ namespace AssemblyCSharp.Assets.Scripts
 		[SerializeField]
 		private LandscapeAssembler landscapeAssembler;
 
+		[SerializeField]
+		private ParallaxManager parallaxManager;
+
 		public void Start()
 		{
 			gameState = GenerateStage(gameConfig);
@@ -42,6 +45,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			character.Initialize(gameConfig.playerCharacter, gameState.Character);
 			landscapeAssembler.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
 			cameraMovement.Initialize(gameState.Character, gameConfig.camera);
+			parallaxManager.Initialize(appStateManager,cameraMovement.GetComponent<Camera>(), gameConfig.parallaxLayers);
 		}
 
 		private static GameState GenerateStage(GameConfig gameConfig)

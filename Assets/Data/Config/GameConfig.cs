@@ -18,7 +18,6 @@ namespace AssemblyCSharp.AssetsData.Data.Config
 
 		public List<TileSetConfig> tileSets;
 
-		public List<TileSetConfig> backgroundSets;
-
+		public ParallaxConfig[] parallaxLayers;
 	}
 }

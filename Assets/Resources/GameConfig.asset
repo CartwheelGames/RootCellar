@@ -20,6 +20,8 @@ MonoBehaviour:
   crops: []
   playerCharacter:
     baseSpeed: 0.01
+    staminaGrowth: 2
+    staminaDecreasePerFrame: 0.00001
   stages:
   - baseWidth: 10
     structures: []
@@ -37,3 +39,36 @@ MonoBehaviour:
       sprite: {fileID: 21300000, guid: ba9ded058b398405da92eb7c6c6e57ec, type: 3}
       type: 9
       weight: 1
+  parallaxLayers:
+  - parallaxAmount: 0.6
+    numberOnscreen: 1
+    yOffset: 0.5
+    tiles:
+    - id: Trees
+      sprite: {fileID: 21300000, guid: 7340797e328504aaba0c3beec67c830b, type: 3}
+      type: 0
+      weight: 100
+  - parallaxAmount: 0.8
+    numberOnscreen: 1
+    yOffset: 2
+    tiles:
+    - id: 
+      sprite: {fileID: 21300000, guid: 4ac08b75b1c704a0e9bb7dc2992fe646, type: 3}
+      type: 0
+      weight: 100
+  - parallaxAmount: 0.9
+    numberOnscreen: 1
+    yOffset: 2
+    tiles:
+    - id: 
+      sprite: {fileID: 21300000, guid: 064a48ba5c32f488da5007885b2782f5, type: 3}
+      type: 0
+      weight: 100
+  - parallaxAmount: 1
+    numberOnscreen: 1
+    yOffset: 2
+    tiles:
+    - id: 
+      sprite: {fileID: 21300000, guid: bef417bf26df4400bad840914b6ad8c6, type: 3}
+      type: 0
+      weight: 100
