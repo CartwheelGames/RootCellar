@@ -12,51 +12,64 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 		[SerializeField]
 		private Animator animator;
 
-		private CharacterData character;
+		private AppStateManager appStateManager;
 
 		private CharacterStateManager characterStateManager = new();
 
 		private GameConfig gameConfig;
 
+		private GameState gameState;
+
 		private TileManager tileManager;
 
 		private CharacterConfig CharacterConfig => gameConfig != null ? gameConfig.playerCharacter : null;
+
+		private CharacterData CharacterData => gameState.Character;
 
 		private float Speed => gameConfig != null && gameConfig.playerCharacter != null
 			? gameConfig.playerCharacter.baseSpeed
 			: 1f;
 
 		public void Initialize(
+			AppStateManager appStateManager,
 			GameConfig gameConfig,
-			CharacterData character,
+			GameState gameState,
 			TileManager tileManager)
 		{
-			this.character = character;
+			this.appStateManager = appStateManager;
+			this.gameState = gameState;
 			this.gameConfig = gameConfig;
 			this.tileManager = tileManager;
-			transform.position = new Vector3(character.X, transform.position.y, transform.position.z);
-			characterStateManager.AddEnterListener(CharacterState.Idle, () => PlayAnimation("Idle"));
-			characterStateManager.AddEnterListener(CharacterState.Plow, () => PlayAnimation("Idle"));
-			characterStateManager.AddEnterListener(CharacterState.Chop, () => PlayAnimation("Idle"));
-			characterStateManager.AddEnterListener(CharacterState.Dig, () => PlayAnimation("Idle"));
-			characterStateManager.AddEnterListener(CharacterState.Forage, () => PlayAnimation("Idle"));
-			characterStateManager.AddEnterListener(CharacterState.Harvest, () => PlayAnimation("Idle"));
-			characterStateManager.AddEnterListener(CharacterState.Hit, () => PlayAnimation("Idle"));
-			characterStateManager.AddEnterListener(CharacterState.Plant, () => PlayAnimation("Idle"));
-			characterStateManager.AddEnterListener(CharacterState.Water, () => PlayAnimation("Idle"));
-			characterStateManager.AddEnterListener(CharacterState.Walk, () => PlayAnimation(character.IsFacingLeft ? "WalkLeft" : "WalkRight"));
+			transform.position = new Vector3(
+				gameState.Character.X,
+				transform.position.y,
+				transform.position.z);
+			void animate (string animationId) => animator.Play(animationId);
+			characterStateManager.AddEnterListener(CharacterState.Idle, () => animate("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Plow, () => animate("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Chop, () => animate("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Dig, () => animate("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Forage, () => animate("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Harvest, () => animate("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Hit, () => animate("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Plant, () => animate("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Water, () => animate("Idle"));
+			characterStateManager.AddEnterListener(CharacterState.Walk, () =>
+			{
+				animate(gameState.Character.IsFacingLeft ? "WalkLeft" : "WalkRight");
+			});
 		}
 
 		public void Update()
 		{
-			if (character != null && tileManager != null)
+			if (gameState != null && tileManager != null && appStateManager.CurrentState == AppState.Game)
 			{
 				float horizontalInput = Input.GetAxis("Horizontal");
 				float verticalInput = Input.GetAxis("Vertical");
 				if (verticalInput < -float.Epsilon)
 				{
 					AssignCharacterX();
-					TileHandler tile = tileManager.TileHandlers[character.X];
+					TileHandler tile = tileManager.TileHandlers[gameState.Character.X];
 					string tileConfigId = tile.data.TileConfigId;
 					TileConfig tileConfig = tileManager.GetTileConfig(tileConfigId);
 					if (tileConfig != null)
@@ -68,14 +81,14 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 				{
 					AssignCharacterX();
 					transform.Translate(Vector2.left * Speed);
-					character.IsFacingLeft = true;
+					CharacterData.IsFacingLeft = true;
 					characterStateManager.ChangeState(CharacterState.Walk);
 				}
 				else if (horizontalInput > float.Epsilon)
 				{
 					AssignCharacterX();
 					transform.Translate(Vector2.right * Speed);
-					character.IsFacingLeft = false;
+					CharacterData.IsFacingLeft = false;
 					characterStateManager.ChangeState(CharacterState.Walk);
 				}
 				else
@@ -87,10 +100,10 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 
 		private void AssignCharacterX()
 		{
-			if (character != null)
+			if (CharacterData != null)
 			{
 				int x = Mathf.RoundToInt(transform.position.x);
-				character.X = Mathf.Clamp(x, 0, tileManager.TileHandlers.Length + 1);
+				CharacterData.X = Mathf.Clamp(x, 0, tileManager.TileHandlers.Length + 1);
 			}
 		}
 
@@ -125,7 +138,7 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 			if (tileHandler.data.ActionProgress >= 1f)
 			{
 				tileManager.SetTileType(tileHandler, TileType.Dirt);
-				character.AddItem(tileHandler.data.CropConfigId);
+				CharacterData.AddItem(tileHandler.data.CropConfigId);
 				tileHandler.data.ActionProgress = 0f;
 				EnterIdleState();
 				Debug.Log("Mound dug into dirt");
@@ -173,7 +186,10 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 				CropConfig cropConfig = gameConfig.crops.SingleOrDefault(c => c.id == tile.data.CropConfigId);
 				if (cropConfig != null)
 				{
-					character.Inventory[cropConfig.id] += cropConfig.yield;
+					for (int i = 0; i < cropConfig.yield; i++)
+					{
+						CharacterData.AddItem(cropConfig.id);
+					}
 					tile.data.CropConfigId = string.Empty;
 					tileManager.SetTileType(tile, TileType.Plot);
 					tile.TopSprite = null;
@@ -181,7 +197,7 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 					System.Random random = new();
 					if (random.Next(100) > cropConfig.seedChance)
 					{
-						character.Inventory[cropConfig.id]++;
+						CharacterData.AddItem(cropConfig.id);
 					}
 					Debug.Log("Harvested crop, tileHandler replaced with Plot");
 				}
@@ -221,7 +237,7 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 
 		private void PlantSeed(TileHandler tile)
 		{
-			if (!string.IsNullOrEmpty(character.CurrentItemId))
+			if (!string.IsNullOrEmpty(CharacterData.CurrentItemId))
 			{
 				if (tile.data.ActionProgress == 0)
 				{
@@ -231,11 +247,11 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 				if (tile.data.ActionProgress >= 1f)
 				{
 					tileManager.SetTileType(tile, TileType.Growing);
-					int count = character.GetCountOfItem(character.CurrentItemId);
+					int count = CharacterData.GetCountOfItem(CharacterData.CurrentItemId);
 					if (count > 0)
 					{
-						character.RemoveItem(character.CurrentItemId);
-						CropConfig cropConfig = gameConfig.crops.SingleOrDefault(c => c.id == character.CurrentItemId);
+						CharacterData.RemoveItem(CharacterData.CurrentItemId);
+						CropConfig cropConfig = gameConfig.crops.SingleOrDefault(c => c.id == CharacterData.CurrentItemId);
 						tile.data.CropConfigId = cropConfig.id;
 						if (cropConfig.stepSprites.Count > 0)
 						{
@@ -256,8 +272,6 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 				Debug.Log("Not carrying any seeds to plant");
 			}
 		}
-
-		private void PlayAnimation(string animationId) => animator.Play(animationId);
 
 		/// <remarks> Ignore for MVP </remarks>
 		private void PlowDirt(TileHandler tile)

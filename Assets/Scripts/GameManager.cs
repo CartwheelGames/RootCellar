@@ -60,7 +60,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			appStateManager.ChangeState(AppState.Title);
 			tileManager.Initialize(appStateManager, gameState.Stage, gameConfig);
 			cameraMovement.Initialize(gameState.Character, gameConfig.camera);
-			characterActions.Initialize(gameConfig, gameState.Character, tileManager);
+			characterActions.Initialize(appStateManager, gameConfig, gameState, tileManager);
 			timeManager.Initialize(appStateManager, gameState);
 			moundManager.Initialize(appStateManager, gameConfig, gameState, tileManager);
 			parallaxManager.Initialize(appStateManager,cameraMovement.GetComponent<Camera>(), gameConfig.parallaxLayers);
