@@ -28,8 +28,6 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 
 		private float Speed => CharacterConfig != null ? CharacterConfig.baseSpeed : 1f;
 
-		private float playerFloatiness => 0.5f;
-
 		public void Initialize(
 			AppStateManager appStateManager,
 			GameConfig gameConfig,
@@ -63,9 +61,9 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 		{
 			if (gameState != null && tileManager != null && appStateManager.CurrentState == AppState.Game)
 			{
-				float horizontalInput = Input.GetAxis("Horizontal");
-				float verticalInput = Input.GetAxis("Vertical");
-				if (verticalInput < -playerFloatiness)
+				float horizontalInput = Input.GetAxisRaw("Horizontal");
+				float verticalInput = Input.GetAxisRaw("Vertical");
+				if (verticalInput < -float.Epsilon)
 				{
 					AssignCharacterX();
 					TileHandler tile = tileManager.TileHandlers[gameState.Character.TileX];
@@ -76,16 +74,24 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 						ProcessTileAction(tile, tileConfig.type);
 					}
 				}
-				else if (horizontalInput < -playerFloatiness)
+				else if (horizontalInput < -float.Epsilon)
 				{
 					transform.Translate(Vector2.left * Speed);
+					if (transform.position.x < 0)
+					{
+						transform.position = new Vector3(0, transform.position.y, transform.position.z);
+					}
 					AssignCharacterX();
 					CharacterData.IsFacingLeft = true;
 					EnterState(CharacterState.Walk);
 				}
-				else if (horizontalInput > playerFloatiness)
+				else if (horizontalInput > float.Epsilon)
 				{
 					transform.Translate(Vector2.right * Speed);
+					if (transform.position.x > gameState.Stage.Tiles.Length - 1)
+					{
+						transform.position = new Vector3(gameState.Stage.Tiles.Length - 1, transform.position.y, transform.position.z);
+					}
 					AssignCharacterX();
 					CharacterData.IsFacingLeft = false;
 					EnterState(CharacterState.Walk);
@@ -195,11 +201,12 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 							if (CharacterData.Stamina >= 100f)
 							{
 								CharacterData.Stamina = 100f;
+								CharacterData.Money++;
 							}
 						}
 						else
 						{
-							CharacterData.Money += 1;
+							CharacterData.Money++;
 						}
 					}
 					tile.data.CropConfigId = string.Empty;

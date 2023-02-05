@@ -105,7 +105,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			moneyCounter.Initialize(gameConfig.playerCharacter, gameState.Character);
 			appStateManager.ChangeState(AppState.Title);
 			tileManager.Initialize(appStateManager, gameState.Stage, gameConfig);
-			cameraMovement.Initialize(gameState.Character, gameConfig.camera);
+			cameraMovement.Initialize(gameState, gameConfig.camera);
 			characterActions.Initialize(appStateManager, gameConfig, gameState, tileManager);
 			timeManager.Initialize(appStateManager, gameState);
 			moundManager.Initialize(appStateManager, gameConfig, gameState, tileManager);

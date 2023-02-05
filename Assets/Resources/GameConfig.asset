@@ -28,7 +28,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
     growSpeed: 0.1
     weight: 1
-    yield: 1
+    yield: 4
   - color: {r: 0.7803922, g: 0.454902, b: 0.5647059, a: 1}
     id: orange
     rootImage: {fileID: 21300000, guid: d400952d1e79343ddaaea2c5e4c611af, type: 3}
@@ -39,7 +39,7 @@ MonoBehaviour:
     - {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
     growSpeed: 0.1
     weight: 1
-    yield: 1
+    yield: 2
   - color: {r: 0.77647066, g: 0.2392157, b: 0.454902, a: 1}
     id: red
     rootImage: {fileID: 21300000, guid: b6edc43423ee848e6b26a2429624346d, type: 3}
@@ -49,10 +49,10 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
     growSpeed: 0.1
-    weight: 1
+    weight: 4
     yield: 1
   playerCharacter:
-    baseSpeed: 0.01
+    baseSpeed: 0.05
     chopTreeSpeed: 1
     digMoundSpeed: 1
     forageBushSpeed: 1
@@ -68,7 +68,7 @@ MonoBehaviour:
     - structureId: tree
       x: 0
     tileSet: tiles
-    width: 200
+    width: 20
   structures:
   - id: tree
     name: Tree
