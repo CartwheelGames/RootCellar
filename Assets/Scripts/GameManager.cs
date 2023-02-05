@@ -19,6 +19,9 @@ namespace AssemblyCSharp.Assets.Scripts
 		[SerializeField]
 		public StartScreenController startScreen;
 
+		[SerializeField]
+		public StaminaBar staminaBar;
+
 		private AppStateManager appStateManager = new();
 
 		[SerializeField]
@@ -34,6 +37,7 @@ namespace AssemblyCSharp.Assets.Scripts
 		{
 			gameState = GenerateStage(gameConfig);
 			startScreen.Initialize(appStateManager);
+			staminaBar.Initialize(gameConfig.playerCharacter, gameState.Character);
 			appStateManager.ChangeState(AppState.Title);
 			character.Initialize(gameConfig.playerCharacter, gameState.Character);
 			landscapeAssembler.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
