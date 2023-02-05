@@ -28,6 +28,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			this.character = character;
 			this.gameConfig = gameConfig;
 			this.tileManager = tileManager;
+			transform.position = new Vector3(character.X, transform.position.y, transform.position.z);
 		}
 
 		public void Update()
@@ -51,7 +52,7 @@ namespace AssemblyCSharp.Assets.Scripts
 				else if (verticalInput < -float.Epsilon)
 				{
 					AssignCharacterX();
-					TileHandler tile = tileManager.Tiles[character.X];
+					TileHandler tile = tileManager.TileHandlers[character.X];
 					string tileConfigId = tile.data.TileConfigId;
 					TileConfig tileConfig = tileManager.GetTileConfig(tileConfigId);
 					if (tileConfig != null)
@@ -67,23 +68,32 @@ namespace AssemblyCSharp.Assets.Scripts
 			if (character != null)
 			{
 				int x = Mathf.RoundToInt(transform.position.x);
-				character.X = Mathf.Clamp(x, 0, tileManager.Tiles.Length + 1);
+				character.X = Mathf.Clamp(x, 0, tileManager.TileHandlers.Length + 1);
 			}
 		}
 
 		/// <remarks> Ignore for MVP </remarks>
 		private void ChopTree(TileHandler tile)
 		{
+			if (tile.data.ActionProgress == 0)
+			{
+				Debug.Log("Chopping Tree");
+			}
 			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.chopTreeSpeed;
 			if (tile.data.ActionProgress >= 1f)
 			{
 				tileManager.SetTileType(tile, TileType.Dirt);
 				tile.data.ActionProgress = 0f;
+				Debug.Log("Tree chopped into dirt");
 			}
 		}
 
 		private void DigMound(TileHandler tile)
 		{
+			if (tile.data.ActionProgress == 0)
+			{
+				Debug.Log("Digging mound");
+			}
 			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.digMoundSpeed;
 			if (tile.data.ActionProgress >= 1f)
 			{
@@ -96,32 +106,41 @@ namespace AssemblyCSharp.Assets.Scripts
 					CropConfig cropConfig = gameConfig.crops[c];
 					if (randomValue < cropConfig.weight)
 					{
-						character.Inventory[cropConfig.id]++;
+						character.AddItem(cropConfig.id);
 						break;
 					}
 					randomValue -= cropConfig.weight;
 				}
 				tile.data.ActionProgress = 0f;
+				Debug.Log("Mound dug into dirt");
 			}
 		}
 
 		/// <remarks> Ignore for MVP </remarks>
 		private void ForageBush(TileHandler tile)
 		{
+			if (tile.data.ActionProgress == 0)
+			{
+				Debug.Log("Foraging bush");
+			}
 			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.forageBushSpeed;
 			if (tile.data.ActionProgress >= 1f)
 			{
 				tileManager.SetTileType(tile, TileType.Dirt);
 				tile.data.ActionProgress = 0f;
+				Debug.Log("Bush foraged into Dirt");
 			}
 		}
 
 		private void HarvestCrop(TileHandler tile)
 		{
+			if (tile.data.ActionProgress == 0)
+			{
+				Debug.Log("Harvesting crop");
+			}
 			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.digMoundSpeed;
 			if (tile.data.ActionProgress >= 1f)
 			{
-				tile.data.ActionProgress = 0f;
 				CropConfig cropConfig = gameConfig.crops.SingleOrDefault(c => c.id == tile.data.CropConfigId);
 				if (cropConfig != null)
 				{
@@ -135,49 +154,78 @@ namespace AssemblyCSharp.Assets.Scripts
 					{
 						character.Inventory[cropConfig.id]++;
 					}
+					Debug.Log("Harvested crop, tile replaced with Plot");
 				}
+				else
+				{
+					Debug.LogWarning($"No crop was found with the ID: {tile.data.CropConfigId}");
+				}
+				tile.data.ActionProgress = 0f;
 			}
 		}
 
 		/// <remarks> Ignore for MVP </remarks>
 		private void HitRock(TileHandler tile)
 		{
+			if (tile.data.ActionProgress == 0)
+			{
+				Debug.Log("Rock hit");
+			}
 			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.hitRockSpeed;
 			if (tile.data.ActionProgress >= 1f)
 			{
 				tileManager.SetTileType(tile, TileType.Dirt);
 				tile.data.ActionProgress = 0f;
+				Debug.Log("Hit rock into dirt");
 			}
 		}
 
 		private void PlantSeed(TileHandler tile)
 		{
-			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.digMoundSpeed;
-			if (tile.data.ActionProgress >= 1f)
+			if (!string.IsNullOrEmpty(character.CurrentItemId))
 			{
-				tileManager.SetTileType(tile, TileType.Growing);
-				tile.data.ActionProgress = 0f;
-				if (!string.IsNullOrEmpty(character.CurrentItemId)
-					&& character.Inventory.ContainsKey(character.CurrentItemId))
+				if (tile.data.ActionProgress == 0)
 				{
-					CropConfig cropConfig = gameConfig.crops.SingleOrDefault(c => c.id == character.CurrentItemId);
-					tile.data.CropConfigId = cropConfig.id;
-					if (cropConfig.images.Count > 0)
-					{
-						tile.topRenderer.sprite = cropConfig.images[0];
-					}
+					Debug.Log("Planging seed");
 				}
+				tile.data.ActionProgress += Time.deltaTime * CharacterConfig.digMoundSpeed;
+				if (tile.data.ActionProgress >= 1f)
+				{
+					tileManager.SetTileType(tile, TileType.Growing);
+					int count = character.GetCountOfItem(character.CurrentItemId);
+					if (count > 0)
+					{
+						character.RemoveItem(character.CurrentItemId);
+						CropConfig cropConfig = gameConfig.crops.SingleOrDefault(c => c.id == character.CurrentItemId);
+						tile.data.CropConfigId = cropConfig.id;
+						if (cropConfig.images.Count > 0)
+						{
+							tile.topRenderer.sprite = cropConfig.images[0];
+						}
+						Debug.Log("Seed planted");
+					}
+					tile.data.ActionProgress = 0f;
+				}
+			}
+			else
+			{
+				Debug.Log("Not carrying any seeds to plant");
 			}
 		}
 
 		/// <remarks> Ignore for MVP </remarks>
 		private void PlowDirt(TileHandler tile)
 		{
+			if (tile.data.ActionProgress == 0)
+			{
+				Debug.Log("Plowing Dirt");
+			}
 			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.plowDirtSpeed;
 			if (tile.data.ActionProgress >= 1f)
 			{
 				tileManager.SetTileType(tile, TileType.Plot);
 				tile.data.ActionProgress = 0f;
+				Debug.Log("Dirt Plowed into a Plot");
 			}
 		}
 
@@ -227,11 +275,16 @@ namespace AssemblyCSharp.Assets.Scripts
 		/// <remarks> Ignore for MVP </remarks>
 		private void WaterPlot(TileHandler tile)
 		{
+			if (tile.data.ActionProgress == 0)
+			{
+				Debug.Log("Watering plot");
+			}
 			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.waterPlotSpeed;
 			if (tile.data.ActionProgress >= 1f)
 			{
 				tile.data.Water = 1f;
 				tile.data.ActionProgress = 0f;
+				Debug.Log("Plot watered");
 			}
 		}
 	}

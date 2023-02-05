@@ -1,19 +1,21 @@
-using AssemblyCSharp.AssetsData.Data.Config;
-using AssemblyCSharp.AssetsData.Data.State;
 using UnityEngine;
 
 namespace AssemblyCSharp.Assets.Scripts
 {
 	public sealed class CharacterAnimation : MonoBehaviour
 	{
+		private CharacterAnimationState _animationState = CharacterAnimationState.None;
+
+		[SerializeField] private Animator _animator;
+
 		private enum CharacterAnimationState
 		{
 			Left,
+
 			Right,
+
 			None
 		};
-		[SerializeField] private Animator _animator;
-		private CharacterAnimationState _animationState = CharacterAnimationState.None;
 
 		public void Update()
 		{
@@ -35,7 +37,7 @@ namespace AssemblyCSharp.Assets.Scripts
 				UpdateAnimationState(CharacterAnimationState.Right);
 			}
 		}
-		
+
 		private void UpdateAnimationState(CharacterAnimationState newState)
 		{
 			if (newState != _animationState)
@@ -45,9 +47,11 @@ namespace AssemblyCSharp.Assets.Scripts
 					case CharacterAnimationState.Left:
 						_animator.Play("WalkLeft");
 						break;
+
 					case CharacterAnimationState.Right:
 						_animator.Play("WalkRight");
 						break;
+
 					case CharacterAnimationState.None:
 						_animator.Play("Idle");
 						break;

@@ -349,18 +349,6 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 374066573491607450, guid: c28f81d74c63f4ee59e55c85036e88ee, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.3335279
-      objectReference: {fileID: 0}
-    - target: {fileID: 374066573491607450, guid: c28f81d74c63f4ee59e55c85036e88ee, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.3335279
-      objectReference: {fileID: 0}
-    - target: {fileID: 374066573491607450, guid: c28f81d74c63f4ee59e55c85036e88ee, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.3335279
-      objectReference: {fileID: 0}
-    - target: {fileID: 374066573491607450, guid: c28f81d74c63f4ee59e55c85036e88ee, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.00021654
       objectReference: {fileID: 0}
@@ -808,7 +796,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c643990acf1489438baae4b8f83589d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  structurePrefab: {fileID: 6507018662977657722, guid: e1703ef2f49bab04cbe5f05e79c5c76d, type: 3}
   tilePrefab: {fileID: -619728439091590119, guid: ee8f9e3c639b549de8a566f589d5125f, type: 3}
+  tileZ: 1
+  treeZ: 2
 --- !u!4 &640319987
 Transform:
   m_ObjectHideFlags: 0
@@ -973,10 +964,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterMovement: {fileID: 766832107}
-  startScreen: {fileID: 1325636777}
-  staminaBar: {fileID: 109351678}
   inventoryUI: {fileID: 766832111}
   moneyCounter: {fileID: 1723363935}
+  staminaBar: {fileID: 109351678}
+  startScreen: {fileID: 1325636777}
   cameraMovement: {fileID: 519420033}
   gameConfig: {fileID: 11400000, guid: 658c542a557242c4296a75741a95f595, type: 2}
   tileManager: {fileID: 640319986}

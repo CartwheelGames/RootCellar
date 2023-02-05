@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace AssemblyCSharp.AssetsData.Data.Config
 {
@@ -8,6 +9,8 @@ namespace AssemblyCSharp.AssetsData.Data.Config
 		public string id;
 
 		public string name = string.Empty;
+
+		public Sprite sprite;
 
 		public int resourceCount;
 

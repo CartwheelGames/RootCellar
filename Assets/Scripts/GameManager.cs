@@ -12,21 +12,21 @@ namespace AssemblyCSharp.Assets.Scripts
 	public sealed class GameManager : MonoBehaviour
 	{
 		[SerializeField]
-		public CharacterMovement characterMovement;
+		private CharacterMovement characterMovement;
 
-		public GameState gameState;
-
-		[SerializeField]
-		public StartScreenController startScreen;
+		private GameState gameState;
 
 		[SerializeField]
-		public StaminaBar staminaBar;
+		private InventoryUI inventoryUI;
 
-		[SerializeField] 
-		public InventoryUI inventoryUI;
+		[SerializeField]
+		private MoneyCounter moneyCounter;
 
-		[SerializeField] 
-		public MoneyCounter moneyCounter;
+		[SerializeField]
+		private StaminaBar staminaBar;
+
+		[SerializeField]
+		private StartScreenController startScreen;
 
 		private AppStateManager appStateManager = new();
 
@@ -43,12 +43,12 @@ namespace AssemblyCSharp.Assets.Scripts
 		{
 			gameState = GenerateStage(gameConfig);
 			startScreen.Initialize(appStateManager);
-			staminaBar.Initialize(gameConfig.playerCharacter, gameState.Character);
-			inventoryUI.Initialize(gameConfig.playerCharacter, gameState.Character, this);
+			staminaBar.Initialize(appStateManager, gameConfig.playerCharacter, gameState.Character);
+			inventoryUI.Initialize(gameState.Character, gameConfig);
 			moneyCounter.Initialize(gameConfig.playerCharacter, gameState.Character);
-			
+
 			appStateManager.ChangeState(AppState.Title);
-			tileManager.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
+			tileManager.Initialize(appStateManager, gameState.Stage, gameConfig);
 			cameraMovement.Initialize(gameState.Character, gameConfig.camera);
 			characterMovement.Initialize(gameConfig, gameState.Character, tileManager);
 		}
@@ -92,22 +92,6 @@ namespace AssemblyCSharp.Assets.Scripts
 				}
 			}
 			return 0;
-		}
-
-		public CropConfig GetCropConfigFromCropId(string cropId)
-		{
-			// TODO: Michael fill out - for any given crop Id (the id stored in Inventory dictionary),
-			// return the relevant CropConfig object
-
-			return new CropConfig
-			{
-				days = 99,
-				id = cropId,
-				seedChance = 0,
-				seedImage = null,
-				color = Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f),
-				yield = 0
-			};
 		}
 	}
 }

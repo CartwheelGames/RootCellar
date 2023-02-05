@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameConfig
   m_EditorClassIdentifier: 
   camera:
-    snapDistance: 100
+    snapDistance: 10
     speed: 2
     xOffset: 2
     yOffset: 2
@@ -30,10 +30,18 @@ MonoBehaviour:
     staminaDecreasePerFrame: 0.01
   stages:
   - baseWidth: 10
-    structures: []
+    structures:
+    - structureId: tree
+      x: 0
     tileSet: tiles
     width: 200
-  structures: []
+  structures:
+  - id: tree
+    name: Tree
+    sprite: {fileID: 21300000, guid: b5ccb7fcc571b4f248ccd9fe3d2d6227, type: 3}
+    resourceCount: 0
+    resourceType: 0
+    type: 1
   tileSets:
   - id: tiles
     tiles:

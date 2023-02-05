@@ -1,6 +1,7 @@
 ﻿using AssemblyCSharp.Assets.Data;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace AssemblyCSharp.Assets.Scripts
 {
@@ -34,6 +35,7 @@ namespace AssemblyCSharp.Assets.Scripts
 		{
 			if (CurrentAppState != newState)
 			{
+				Debug.Log($"Transitioning from {CurrentAppState} state to {newState}");
 				if (leaveCallbacks.TryGetValue(CurrentAppState, out List<Action> leaveActions))
 				{
 					foreach(Action action in leaveActions)

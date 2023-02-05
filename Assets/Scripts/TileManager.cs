@@ -3,7 +3,6 @@ using AssemblyCSharp.AssetsData.Data;
 using AssemblyCSharp.AssetsData.Data.Config;
 using AssemblyCSharp.AssetsData.Data.State;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -11,25 +10,31 @@ namespace AssemblyCSharp.Assets.Scripts
 {
 	public class TileManager : MonoBehaviour
 	{
+		public GameObject structurePrefab;
+
 		public TileHandler tilePrefab;
+
+		public int tileZ = 1;
+
+		public int treeZ = 2;
+
+		private GameConfig gameConfig;
 
 		private Stage stage;
 
 		private TileSetConfig tileSet;
 
-		private List<TileSetConfig> tileSets;
-
-		public TileHandler[] Tiles { get; private set; } = Array.Empty<TileHandler>();
+		public TileHandler[] TileHandlers { get; private set; } = Array.Empty<TileHandler>();
 
 		public TileConfig GetTileConfig(string tileConfigId) => tileSet.tiles.SingleOrDefault(t => t.id == tileConfigId);
 
-		public void Initialize(AppStateManager appStateManager, Stage stage, List<TileSetConfig> tileSets)
+		public void Initialize(AppStateManager appStateManager, Stage stage, GameConfig gameConfig)
 		{
 			this.stage = stage;
-			this.tileSets = tileSets;
-
+			this.gameConfig = gameConfig;
 			appStateManager.AddEnterListener(AppState.TitleToGame, Generate);
-			appStateManager.AddLeaveListener(AppState.Game, Cleanup);
+			appStateManager.AddLeaveListener(AppState.GameToLose, Cleanup);
+			appStateManager.AddLeaveListener(AppState.GameToWin, Cleanup);
 		}
 
 		public void SetTileType(TileHandler tileHandler, TileType type)
@@ -54,24 +59,32 @@ namespace AssemblyCSharp.Assets.Scripts
 
 		private void Cleanup()
 		{
-			for (int i = 0; i < Tiles.Length; i++)
+			for (int i = 0; i < TileHandlers.Length; i++)
 			{
-				Destroy(Tiles[i].gameObject);
+				Destroy(TileHandlers[i].gameObject);
 			}
-			Tiles = Array.Empty<TileHandler>();
+			TileHandlers = Array.Empty<TileHandler>();
 			tileSet = null;
 		}
 
 		private void Generate()
 		{
-			Tiles = new TileHandler[stage.Tiles.Length];
-			tileSet = tileSets.SingleOrDefault(t => t.id == stage.TileSetId);
+			TileHandlers = new TileHandler[stage.Tiles.Length];
+			tileSet = gameConfig.tileSets.SingleOrDefault(t => t.id == stage.TileSetId);
 			for (int x = 0; x < stage.Tiles.Length; x++)
 			{
-				Tiles[x] = Instantiate(tilePrefab, new Vector3(x, -1, -1), Quaternion.identity, transform);
+				TileHandler tileHandler = Instantiate(tilePrefab, new Vector3(x, -1, tileZ), Quaternion.identity, transform);
 				string tileID = stage.Tiles[x].TileConfigId;
-				Tiles[x].mainRenderer.sprite = tileSet.tiles.SingleOrDefault(t => t.id == tileID)?.sprite;
-				Tiles[x].data = stage.Tiles[x];
+				tileHandler.mainRenderer.sprite = tileSet.tiles.SingleOrDefault(t => t.id == tileID)?.sprite;
+				tileHandler.data = stage.Tiles[x];
+				if (tileHandler.data.Structure != null)
+				{
+					GameObject structure = Instantiate(structurePrefab, new Vector3(x, -1, treeZ), Quaternion.identity, tileHandler.transform);
+					SpriteRenderer spriteRenderer = structure.GetComponent<SpriteRenderer>();
+					StructureConfig structureConfig = gameConfig.structures.SingleOrDefault(s => s.id == tileHandler.data.Structure.StructureConfigId);
+					spriteRenderer.sprite = structureConfig?.sprite;
+				}
+				TileHandlers[x] = tileHandler;
 			}
 		}
 	}
