@@ -8,7 +8,7 @@ namespace AssemblyCSharp.AssetsData.Data.Config
 	{
 		public string id;
 
-		public Texture2D image;
+		public Sprite sprite;
 
 		public TileType type;
 

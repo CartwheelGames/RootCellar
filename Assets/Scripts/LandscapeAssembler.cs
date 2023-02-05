@@ -36,8 +36,11 @@ namespace AssemblyCSharp.Assets.Scripts
 			tiles = new GameObject[stage.Tiles.Length];
             TileSetConfig tileSet = tileSets.SingleOrDefault(t=>t.id == stage.TileSetId);
 			for (int x = 0; x < stage.Tiles.Length; x++)
-			{
+            {
 				tiles[x] = Instantiate(tilePrefab, new Vector3(x, -1, 0), Quaternion.identity, transform);
+                SpriteRenderer spriteRenderer = tiles[x].GetComponent<SpriteRenderer>();
+                string tileID = stage.Tiles[x].TileConfigId;
+                spriteRenderer.sprite = tileSet.tiles.SingleOrDefault(t=>t.id == tileID)?.sprite;                
 			}
 		}
 	}
