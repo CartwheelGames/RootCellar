@@ -26,6 +26,7 @@ MonoBehaviour:
     stepSprites:
     - {fileID: 0}
     - {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
+    - {fileID: 21300000, guid: dfddd144d98414ff0a0fa21c3bd7fd1d, type: 3}
     growSpeed: 0.1
     weight: 1
     yield: 1
@@ -37,6 +38,7 @@ MonoBehaviour:
     stepSprites:
     - {fileID: 0}
     - {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
+    - {fileID: 21300000, guid: 3481e71168f754c20a4ddd01107452f5, type: 3}
     growSpeed: 0.1
     weight: 1
     yield: 1
@@ -48,6 +50,7 @@ MonoBehaviour:
     stepSprites:
     - {fileID: 0}
     - {fileID: 21300000, guid: c0948696ab31444b6b3a3282a6a8dcbc, type: 3}
+    - {fileID: 21300000, guid: 8e58927dc9978464fbfcf9edddfd85d1, type: 3}
     growSpeed: 0.1
     weight: 1
     yield: 1
@@ -82,32 +85,32 @@ MonoBehaviour:
     - id: dirt
       sprite: {fileID: 21300000, guid: cfeaf357c21cd47a38669281c7fc0683, type: 3}
       type: 1
-      weight: 1
+      weight: 2
     - id: plot
       sprite: {fileID: 21300000, guid: 8a4a4572633c44179a5ea5603f630313, type: 3}
       type: 2
       weight: 0
-    - id: path
+    - id: mound
       sprite: {fileID: 21300000, guid: 59e5ffe76ed1c4e53b4ba07671dc5a17, type: 3}
-      type: 3
-      weight: 0
-    - id: path1
+      type: 5
+      weight: 1
+    - id: crop1
       sprite: {fileID: 21300000, guid: 6e51b638c015e4914bcb4336562990a4, type: 3}
       type: 4
       weight: 0
-    - id: crop1
+    - id: crop2
       sprite: {fileID: 21300000, guid: d400952d1e79343ddaaea2c5e4c611af, type: 3}
       type: 4
       weight: 0
-    - id: crop2
+    - id: crop3
       sprite: {fileID: 21300000, guid: b6edc43423ee848e6b26a2429624346d, type: 3}
       type: 4
       weight: 0
     - id: sprout1
       sprite: {fileID: 21300000, guid: 72a3d935b5c414f17a8a8740d1dea984, type: 3}
-      type: 5
-      weight: 1
-    - id: crop3
+      type: 3
+      weight: 0
+    - id: path
       sprite: {fileID: 21300000, guid: 7a0766861994d4a65b8e518a4e9fbd2e, type: 3}
       type: 9
       weight: 0
