@@ -61,7 +61,7 @@ MonoBehaviour:
     staminaGrowth: 10
     staminaDecreaseSpeed: 0.1
   stages:
-  - baseWidth: 10
+  - baseWidth: 0
     id: 
     moundPlaceInterval: 10
     structures:
