@@ -54,7 +54,7 @@ namespace AssemblyCSharp.Assets.Scripts
 			{
 				CropConfig cropConfig = GetCropConfigFromCropId(inventoryItemId);
 
-				// if for some reason, the crop id doesn't correspond to a Crop Config,
+				// if for some reason, the crop stageConfigId doesn't correspond to a Crop Config,
 				// don't display the inventory UI for that object
 				if (cropConfig != null)
 				{

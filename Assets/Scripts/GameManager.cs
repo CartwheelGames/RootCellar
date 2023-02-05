@@ -11,8 +11,16 @@ namespace AssemblyCSharp.Assets.Scripts
 {
 	public sealed class GameManager : MonoBehaviour
 	{
+		private AppStateManager appStateManager = new();
+
+		[SerializeField]
+		private CameraMovement cameraMovement;
+
 		[SerializeField]
 		private CharacterMovement characterMovement;
+
+		[SerializeField]
+		private GameConfig gameConfig;
 
 		private GameState gameState;
 
@@ -23,21 +31,19 @@ namespace AssemblyCSharp.Assets.Scripts
 		private MoneyCounter moneyCounter;
 
 		[SerializeField]
+		private MoundManager moundManager;
+
+		[SerializeField]
 		private StaminaBar staminaBar;
 
 		[SerializeField]
 		private StartScreenController startScreen;
 
-		private AppStateManager appStateManager = new();
-
-		[SerializeField]
-		private CameraMovement cameraMovement;
-
-		[SerializeField]
-		private GameConfig gameConfig;
-
 		[SerializeField]
 		private TileManager tileManager;
+
+		[SerializeField]
+		private TimeManager timeManager;
 
 		public void Start()
 		{
@@ -51,6 +57,8 @@ namespace AssemblyCSharp.Assets.Scripts
 			tileManager.Initialize(appStateManager, gameState.Stage, gameConfig);
 			cameraMovement.Initialize(gameState.Character, gameConfig.camera);
 			characterMovement.Initialize(gameConfig, gameState.Character, tileManager);
+			timeManager.Initialize(appStateManager, gameState);
+			moundManager.Initialize(appStateManager, gameConfig, gameState, tileManager);
 		}
 
 		private static GameState GenerateStage(GameConfig gameConfig)

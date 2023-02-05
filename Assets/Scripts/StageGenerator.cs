@@ -9,10 +9,10 @@ namespace AssemblyCSharp.AssetsData.Logic
 {
 	public static class StageGenerator
 	{
-		public static Stage Generate(GameConfig config, int stageIndex = 0)
+		public static Stage Generate(GameConfig gameConfig, int stageIndex = 0)
 		{
 			// Populate TileHandlers:
-			StageConfig stageConfig = config.stages[stageIndex];
+			StageConfig stageConfig = gameConfig.stages[stageIndex];
 			int width = stageConfig.width;
 			int baseWidth = stageConfig.baseWidth;
 			string tileSetId = stageConfig.tileSet;
@@ -21,7 +21,7 @@ namespace AssemblyCSharp.AssetsData.Logic
 			int halfBaseWidth = baseWidth / 2;
 			int baseStartX = halfWidth - halfBaseWidth;
 			int baseEndX = halfWidth + halfBaseWidth;
-			TileSetConfig tileSet = config.tileSets.SingleOrDefault(t => t.id == tileSetId);
+			TileSetConfig tileSet = gameConfig.tileSets.SingleOrDefault(t => t.id == tileSetId);
 			if (tileSet != null)
 			{
 				int totalWeight = tileSet.tiles.Sum(x => x.weight);
@@ -46,24 +46,25 @@ namespace AssemblyCSharp.AssetsData.Logic
 						int randomValue = random.Next(totalWeight);
 						for (int t = 0; t < tileSet.tiles.Count; t++)
 						{
-							TileConfig tile = tileSet.tiles[t];
-							if (randomValue < tile.weight)
+							TileConfig tileConfig = tileSet.tiles[t];
+							if (randomValue < tileConfig.weight)
 							{
 								tiles[x] = new Tile()
 								{
-									TileConfigId = tile.id
+									TileConfigId = tileConfig.id,
+									CropConfigId = tileConfig.type == TileType.Mound ? GetRandomCropId(gameConfig) : string.Empty
 								};
 								break;
 							}
-							randomValue -= tile.weight;
+							randomValue -= tileConfig.weight;
 						}
 					}
 				}
 			}
 			foreach (StageConfig.StageStructureInfo structureInfo in stageConfig.structures)
 			{
-				StructureConfig structureConfig = config.structures.SingleOrDefault(s => s.id == structureInfo.structureId);
-				if(structureConfig != null)
+				StructureConfig structureConfig = gameConfig.structures.SingleOrDefault(s => s.id == structureInfo.structureId);
+				if (structureConfig != null)
 				{
 					tiles[halfWidth + structureInfo.x].Structure = new Structure()
 					{
@@ -75,9 +76,27 @@ namespace AssemblyCSharp.AssetsData.Logic
 			}
 			return new Stage()
 			{
+				stageConfigId = stageConfig.id,
 				Tiles = tiles,
 				TileSetId = tileSetId
 			};
+		}
+
+		public static string GetRandomCropId(GameConfig gameConfig)
+		{
+			Random random = new();
+			int totalWeight = gameConfig.crops.Sum(x => x.weight);
+			int randomValue = random.Next(totalWeight);
+			for (int c = 0; c < gameConfig.crops.Count; c++)
+			{
+				CropConfig cropConfig = gameConfig.crops[c];
+				if (randomValue < cropConfig.weight)
+				{
+					return cropConfig.id;
+				}
+				randomValue -= cropConfig.weight;
+			}
+			return string.Empty;
 		}
 	}
 }

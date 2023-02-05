@@ -16,7 +16,7 @@ namespace AssemblyCSharp.Assets.Scripts
 
 		private CharacterConfig CharacterConfig => gameConfig?.playerCharacter;
 
-		private float Speed => gameConfig?.playerCharacter != null
+		private float Speed => gameConfig != null && gameConfig.playerCharacter != null
 			? gameConfig.playerCharacter.baseSpeed
 			: 1f;
 
@@ -88,30 +88,18 @@ namespace AssemblyCSharp.Assets.Scripts
 			}
 		}
 
-		private void DigMound(TileHandler tile)
+		private void DigMound(TileHandler tileHandler)
 		{
-			if (tile.data.ActionProgress == 0)
+			if (tileHandler.data.ActionProgress == 0)
 			{
 				Debug.Log("Digging mound");
 			}
-			tile.data.ActionProgress += Time.deltaTime * CharacterConfig.digMoundSpeed;
-			if (tile.data.ActionProgress >= 1f)
+			tileHandler.data.ActionProgress += Time.deltaTime * CharacterConfig.digMoundSpeed;
+			if (tileHandler.data.ActionProgress >= 1f)
 			{
-				tileManager.SetTileType(tile, TileType.Dirt);
-				System.Random random = new();
-				int totalWeight = gameConfig.crops.Sum(x => x.weight);
-				int randomValue = random.Next(totalWeight);
-				for (int c = 0; c < gameConfig.crops.Count; c++)
-				{
-					CropConfig cropConfig = gameConfig.crops[c];
-					if (randomValue < cropConfig.weight)
-					{
-						character.AddItem(cropConfig.id);
-						break;
-					}
-					randomValue -= cropConfig.weight;
-				}
-				tile.data.ActionProgress = 0f;
+				tileManager.SetTileType(tileHandler, TileType.Dirt);
+				character.AddItem(tileHandler.data.CropConfigId);
+				tileHandler.data.ActionProgress = 0f;
 				Debug.Log("Mound dug into dirt");
 			}
 		}
@@ -154,7 +142,7 @@ namespace AssemblyCSharp.Assets.Scripts
 					{
 						character.Inventory[cropConfig.id]++;
 					}
-					Debug.Log("Harvested crop, tile replaced with Plot");
+					Debug.Log("Harvested crop, tileHandler replaced with Plot");
 				}
 				else
 				{
@@ -198,9 +186,9 @@ namespace AssemblyCSharp.Assets.Scripts
 						character.RemoveItem(character.CurrentItemId);
 						CropConfig cropConfig = gameConfig.crops.SingleOrDefault(c => c.id == character.CurrentItemId);
 						tile.data.CropConfigId = cropConfig.id;
-						if (cropConfig.images.Count > 0)
+						if (cropConfig.stepSprites.Count > 0)
 						{
-							tile.topRenderer.sprite = cropConfig.images[0];
+							tile.topRenderer.sprite = cropConfig.stepSprites[0];
 						}
 						Debug.Log("Seed planted");
 					}

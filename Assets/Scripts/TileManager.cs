@@ -26,6 +26,23 @@ namespace AssemblyCSharp.Assets.Scripts
 
 		public TileHandler[] TileHandlers { get; private set; } = Array.Empty<TileHandler>();
 
+		public void AssignRandomCropToTile(TileHandler tileHandler)
+		{
+			System.Random random = new();
+			int totalWeight = gameConfig.crops.Sum(x => x.weight);
+			int randomValue = random.Next(totalWeight);
+			for (int c = 0; c < gameConfig.crops.Count; c++)
+			{
+				CropConfig cropConfig = gameConfig.crops[c];
+				if (randomValue < cropConfig.weight)
+				{
+					tileHandler.data.CropConfigId = cropConfig.id;
+					break;
+				}
+				randomValue -= cropConfig.weight;
+			}
+		}
+
 		public TileConfig GetTileConfig(string tileConfigId) => tileSet.tiles.SingleOrDefault(t => t.id == tileConfigId);
 
 		public void Initialize(AppStateManager appStateManager, Stage stage, GameConfig gameConfig)
@@ -51,6 +68,10 @@ namespace AssemblyCSharp.Assets.Scripts
 						randomIndex = random.Next(tiles.Length);
 					}
 					string tileConfigId = tiles[randomIndex].id;
+					if (type == TileType.Mound)
+					{
+						AssignRandomCropToTile(tileHandler);
+					}
 					tileHandler.data.TileConfigId = tileConfigId;
 					tileHandler.mainRenderer.sprite = tileSet.tiles.SingleOrDefault(t => t.id == tileConfigId)?.sprite;
 				}

@@ -19,44 +19,50 @@ namespace AssemblyCSharp.AssetsData.Data.State
 		/// <remarks> The x index of the current tile the characterMovement is at </remarks>
 		public int X { get; set; }
 
-		public int GetCountOfItem(string itemId) => Inventory.ContainsKey(itemId) ? Inventory[itemId] : 0;
-
 		public void AddItem(string itemId)
 		{
-			if (Inventory.ContainsKey(itemId))
+			if (!string.IsNullOrEmpty(itemId))
 			{
-				Inventory[itemId]++;
-			}
-			else
-			{
-				Inventory.Add(itemId, 1);
-			}
-			if (string.IsNullOrEmpty(CurrentItemId))
-			{
-				CurrentItemId = itemId;
-			}
-		}
-
-		public bool RemoveItem(string itemId)
-		{
-			int count = GetCountOfItem(itemId);
-			if (count == 1)
-			{
-				Inventory.Remove(itemId);
-				if (Inventory.Count > 0)
+				if (Inventory.ContainsKey(itemId))
 				{
-					CurrentItemId = Inventory.Keys.FirstOrDefault() ?? string.Empty;
+					Inventory[itemId]++;
 				}
 				else
 				{
-					CurrentItemId = string.Empty;
+					Inventory.Add(itemId, 1);
 				}
-				return true;
+				if (string.IsNullOrEmpty(CurrentItemId))
+				{
+					CurrentItemId = itemId;
+				}
 			}
-			else if (count > 1)
+		}
+
+		public int GetCountOfItem(string itemId) => Inventory.ContainsKey(itemId) ? Inventory[itemId] : 0;
+
+		public bool RemoveItem(string itemId)
+		{
+			if (!string.IsNullOrEmpty(itemId))
 			{
-				Inventory[itemId]--;
-				return true;
+				int count = GetCountOfItem(itemId);
+				if (count == 1)
+				{
+					Inventory.Remove(itemId);
+					if (Inventory.Count > 0)
+					{
+						CurrentItemId = Inventory.Keys.FirstOrDefault() ?? string.Empty;
+					}
+					else
+					{
+						CurrentItemId = string.Empty;
+					}
+					return true;
+				}
+				else if (count > 1)
+				{
+					Inventory[itemId]--;
+					return true;
+				}
 			}
 			return false;
 		}

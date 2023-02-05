@@ -9,11 +9,11 @@ namespace AssemblyCSharp.AssetsData.Data.Config
 	{
 		public Color color;
 
-		public int days;
+		public float stepTime = 10f;
 
 		public string id;
 
-		public List<Sprite> images = new();
+		public List<Sprite> stepSprites = new();
 
 		/// <remarks> Out of 100 </remarks>
 		public byte seedChance;
