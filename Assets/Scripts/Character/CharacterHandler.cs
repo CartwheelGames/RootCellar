@@ -190,6 +190,10 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 						if (CharacterData.Stamina < 100f)
 						{
 							CharacterData.Stamina += gameConfig.playerCharacter.staminaGrowth;
+							if (CharacterData.Stamina >= 100f)
+							{
+								CharacterData.Stamina = 100f;
+							}
 						}
 						else
 						{
