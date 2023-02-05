@@ -12,7 +12,11 @@
 
 		Pause,
 
+		GameToWin,
+
 		Win,
+
+		GameToLose,
 
 		Lose
 	}

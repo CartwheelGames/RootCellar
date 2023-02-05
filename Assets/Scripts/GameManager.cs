@@ -1,4 +1,5 @@
 ﻿using AssemblyCSharp.Assets.Data;
+using AssemblyCSharp.Assets.Scripts.Character;
 using AssemblyCSharp.AssetsData.Data;
 using AssemblyCSharp.AssetsData.Data.Config;
 using AssemblyCSharp.AssetsData.Data.State;
@@ -11,27 +12,39 @@ namespace AssemblyCSharp.Assets.Scripts
 {
 	public sealed class GameManager : MonoBehaviour
 	{
-		[SerializeField]
-		public CharacterMovement character;
-
-		public GameState gameState;
-
-		[SerializeField]
-		public StartScreenController startScreen;
-
-		[SerializeField]
-		public StaminaBar staminaBar;
-
 		private AppStateManager appStateManager = new();
 
 		[SerializeField]
 		private CameraMovement cameraMovement;
 
 		[SerializeField]
-		private GameConfig gameConfig;
+		private CharacterHandler characterActions;
 
 		[SerializeField]
-		private LandscapeAssembler landscapeAssembler;
+		private GameConfig gameConfig;
+
+		private GameState gameState;
+
+		[SerializeField]
+		private InventoryUI inventoryUI;
+
+		[SerializeField]
+		private MoneyCounter moneyCounter;
+
+		[SerializeField]
+		private MoundManager moundManager;
+
+		[SerializeField]
+		private StaminaBar staminaBar;
+
+		[SerializeField]
+		private StartScreenController startScreen;
+
+		[SerializeField]
+		private TileManager tileManager;
+
+		[SerializeField]
+		private TimeManager timeManager;
 
 		[SerializeField]
 		private ParallaxManager parallaxManager;
@@ -40,25 +53,39 @@ namespace AssemblyCSharp.Assets.Scripts
 		{
 			gameState = GenerateStage(gameConfig);
 			startScreen.Initialize(appStateManager);
-			staminaBar.Initialize(gameConfig.playerCharacter, gameState.Character);
+			staminaBar.Initialize(appStateManager, gameConfig.playerCharacter, gameState.Character);
+			inventoryUI.Initialize(gameState.Character, gameConfig);
+			moneyCounter.Initialize(gameConfig.playerCharacter, gameState.Character);
+
 			appStateManager.ChangeState(AppState.Title);
-			character.Initialize(gameConfig.playerCharacter, gameState.Character);
-			landscapeAssembler.Initialize(appStateManager, gameState.Stage, gameConfig.tileSets);
+			tileManager.Initialize(appStateManager, gameState.Stage, gameConfig);
 			cameraMovement.Initialize(gameState.Character, gameConfig.camera);
+			characterActions.Initialize(gameConfig, gameState.Character, tileManager);
+			timeManager.Initialize(appStateManager, gameState);
+			moundManager.Initialize(appStateManager, gameConfig, gameState, tileManager);
 			parallaxManager.Initialize(appStateManager,cameraMovement.GetComponent<Camera>(), gameConfig.parallaxLayers);
 		}
 
 		private static GameState GenerateStage(GameConfig gameConfig)
 		{
 			Stage stage = StageGenerator.Generate(gameConfig);
-			Character player = new()
+			CharacterData character = new()
 			{
-				X = GetPlayerStartX(gameConfig, stage)
+				X = GetPlayerStartX(gameConfig, stage),
+				// TODO: REMOVE - just for testing inventory
+				// For now, set inventory to a random collection
+				Inventory = new Dictionary<string, int>()
+				{
+					{ "tempRedBerry", 1 },
+					{ "tempBlueBerry", 1 },
+					{ "tempPinkBerry", 1 }
+				}
 			};
+
 			return new GameState()
 			{
 				Stage = stage,
-				Character = player
+				Character = character
 			};
 		}
 

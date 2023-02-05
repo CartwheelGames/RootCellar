@@ -8,6 +8,10 @@ namespace AssemblyCSharp.AssetsData.Data.Config
 	{
 		public int baseWidth;
 
+		public string id;
+
+		public float moundPlaceInterval;
+
 		public List<StageStructureInfo> structures = new();
 
 		public string tileSet = string.Empty;
