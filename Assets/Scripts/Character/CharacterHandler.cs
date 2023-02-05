@@ -28,6 +28,8 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 
 		private float Speed => CharacterConfig != null ? CharacterConfig.baseSpeed : 1f;
 
+		private float playerFloatiness => 0.5f;
+
 		public void Initialize(
 			AppStateManager appStateManager,
 			GameConfig gameConfig,
@@ -63,7 +65,7 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 			{
 				float horizontalInput = Input.GetAxis("Horizontal");
 				float verticalInput = Input.GetAxis("Vertical");
-				if (verticalInput < -float.Epsilon)
+				if (verticalInput < -playerFloatiness)
 				{
 					AssignCharacterX();
 					TileHandler tile = tileManager.TileHandlers[gameState.Character.TileX];
@@ -74,14 +76,14 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 						ProcessTileAction(tile, tileConfig.type);
 					}
 				}
-				else if (horizontalInput < -float.Epsilon)
+				else if (horizontalInput < -playerFloatiness)
 				{
 					transform.Translate(Vector2.left * Speed);
 					AssignCharacterX();
 					CharacterData.IsFacingLeft = true;
 					EnterState(CharacterState.Walk);
 				}
-				else if (horizontalInput > float.Epsilon)
+				else if (horizontalInput > playerFloatiness)
 				{
 					transform.Translate(Vector2.right * Speed);
 					AssignCharacterX();
