@@ -26,9 +26,7 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 
 		private CharacterData CharacterData => gameState.Character;
 
-		private float Speed => gameConfig != null && gameConfig.playerCharacter != null
-			? gameConfig.playerCharacter.baseSpeed
-			: 1f;
+		private float Speed => CharacterConfig != null ? CharacterConfig.baseSpeed : 1f;
 
 		public void Initialize(
 			AppStateManager appStateManager,
@@ -44,7 +42,7 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 				gameState.Character.X,
 				transform.position.y,
 				transform.position.z);
-			void animate (string animationId) => animator.Play(animationId);
+			void animate(string animationId) => animator.Play(animationId);
 			characterStateManager.AddEnterListener(CharacterState.Idle, () => animate("Idle"));
 			characterStateManager.AddEnterListener(CharacterState.Plow, () => animate("Idle"));
 			characterStateManager.AddEnterListener(CharacterState.Chop, () => animate("Idle"));
@@ -79,21 +77,21 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 				}
 				else if (horizontalInput < -float.Epsilon)
 				{
-					AssignCharacterX();
 					transform.Translate(Vector2.left * Speed);
+					AssignCharacterX();
 					CharacterData.IsFacingLeft = true;
-					characterStateManager.ChangeState(CharacterState.Walk);
+					EnterState(CharacterState.Walk);
 				}
 				else if (horizontalInput > float.Epsilon)
 				{
-					AssignCharacterX();
 					transform.Translate(Vector2.right * Speed);
+					AssignCharacterX();
 					CharacterData.IsFacingLeft = false;
-					characterStateManager.ChangeState(CharacterState.Walk);
+					EnterState(CharacterState.Walk);
 				}
 				else
 				{
-					characterStateManager.ChangeState(CharacterState.Idle);
+					EnterIdleState();
 				}
 			}
 		}
@@ -151,7 +149,8 @@ namespace AssemblyCSharp.Assets.Scripts.Character
 
 		private void EnterIdleState() => EnterState(CharacterState.Idle);
 
-		private void EnterState(CharacterState characterState) => characterStateManager.ChangeState(characterState);
+		private void EnterState(CharacterState characterState) =>
+			characterStateManager.ChangeState(characterState);
 
 		/// <remarks> Ignore for MVP </remarks>
 		private void ForageBush(TileHandler tile)
