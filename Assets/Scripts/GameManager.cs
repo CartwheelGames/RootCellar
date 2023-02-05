@@ -31,6 +31,7 @@ namespace AssemblyCSharp.Assets.Scripts
 
 		[SerializeField]
 		private GrowthManager growthManager;
+
 		[SerializeField]
 		private InventoryUI inventoryUI;
 
@@ -88,8 +89,14 @@ namespace AssemblyCSharp.Assets.Scripts
 			return 0;
 		}
 
+		private void Reset()
+		{
+		}
+
 		private void Start()
 		{
+			appStateManager.AddEnterListener(AppState.LoseToTitle, Reset);
+			appStateManager.AddEnterListener(AppState.WinToTitle, Reset);
 			appStateTransitioner.Initialize(appStateManager);
 			gameState = GenerateStage(gameConfig);
 			overlayManager.Initialize(appStateManager);
